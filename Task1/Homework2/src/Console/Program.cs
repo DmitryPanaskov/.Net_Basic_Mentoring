@@ -7,10 +7,18 @@ namespace ConsoleApp
     {
         public static void Main(string[] args)
         {
-            Console.Write("Enter your name: ");
-            var userName = Console.ReadLine();
+            if (args.Length == 0)
+            {
+                Console.WriteLine("Please enter your name as a argument command line.");
+            }
+
             var messager = new Messager();
-            Console.WriteLine(messager.GetGreetingWithDate(userName));
+
+            foreach (var item in args)
+            {
+                Console.WriteLine(messager.GetGreetingWithDate(item));
+            }
+
             Console.Read();
         }
     }
