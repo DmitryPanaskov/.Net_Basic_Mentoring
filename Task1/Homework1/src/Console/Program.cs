@@ -6,9 +6,16 @@ namespace ConsoleApp
     {
         public static void Main(string[] args)
         {
-            Console.Write("Enter your name: ");
-            var userName = Console.ReadLine();
-            Console.WriteLine($"Hello {userName}!");
+            if (args.Length == 0)
+            {
+                Console.WriteLine("Please enter your name as a argument command line.");
+            }
+
+            foreach (var item in args)
+            {
+                Console.WriteLine($"Hello {item}!");
+            }
+
             Console.Read();
         }
     }
