@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FileSystemVisitor.Enums\FileSystemVisitor.Enums\FileSystemVisitor.Enums.csproj" />
+    <ProjectReference Include="..\FileSystemVisitor.Library\FileSystemVisitor.Library\FileSystemVisitor.Library.csproj" />
+  </ItemGroup>
+
+</Project>
