@@ -8,9 +8,8 @@
     public class Messager : IMessager
     {
         /// <inheritdoc/>
-        public string GetGreetingWithDate(string[] args)
+        public string GetGreetingFromConsoleParameters(string[] args)
         {
-            var currentDateTime = DateTimeOffset.Now;
             var parser = new CommandLineParser<ProgramOptions>(new CommandLineParserOptions());
             var values = parser.Parse(args);
 
@@ -19,7 +18,18 @@
                 Console.Error.WriteLine("Parsing has errors...");
             }
 
-            return $"{currentDateTime} Hello {values}!";
+            return $"{GetCurrentDate()} Hello {values.Result.FirstName} {values.Result.LastName}!";
+        }
+
+        /// <inheritdoc/>
+        public string GetGreeting(string arg)
+        {
+            return $"{GetCurrentDate()} Hello {arg}!";
+        }
+
+        private DateTimeOffset GetCurrentDate()
+        {
+            return DateTimeOffset.Now;
         }
     }
 }

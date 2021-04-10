@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.31019.35
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{BD33777F-D399-4ED8-B0AC-D79DC80FDAFE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsFormsApp", "src\WindowsFormsApp\WindowsFormsApp.csproj", "{6E8DDA8A-6BFD-48C9-9661-2F3622585048}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryStandard", "src\LibraryStandard\LibraryStandard.csproj", "{83F647AB-EFBA-4399-86E6-54BC9D042CA8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp", "src\ConsoleApp\ConsoleApp.csproj", "{C8DFC4BA-EE2A-47C7-8589-7F1EACA0F4AF}"
@@ -14,10 +12,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{DF74777F-CDD7-4E48-A190-FB8B300D14BE}"
 	ProjectSection(SolutionItems) = preProject
 		Directory.Build.props = Directory.Build.props
-		Task1.ruleset = Task1.ruleset
 		README.md = README.md
 		stylecop.json = stylecop.json
+		Task1.ruleset = Task1.ruleset
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsFormsApp", "src\WindowsFormsApp\WindowsFormsApp.csproj", "{6E8DDA8A-6BFD-48C9-9661-2F3622585048}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +25,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6E8DDA8A-6BFD-48C9-9661-2F3622585048}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6E8DDA8A-6BFD-48C9-9661-2F3622585048}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6E8DDA8A-6BFD-48C9-9661-2F3622585048}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6E8DDA8A-6BFD-48C9-9661-2F3622585048}.Release|Any CPU.Build.0 = Release|Any CPU
 		{83F647AB-EFBA-4399-86E6-54BC9D042CA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{83F647AB-EFBA-4399-86E6-54BC9D042CA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83F647AB-EFBA-4399-86E6-54BC9D042CA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -37,14 +33,18 @@ Global
 		{C8DFC4BA-EE2A-47C7-8589-7F1EACA0F4AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8DFC4BA-EE2A-47C7-8589-7F1EACA0F4AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C8DFC4BA-EE2A-47C7-8589-7F1EACA0F4AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E8DDA8A-6BFD-48C9-9661-2F3622585048}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E8DDA8A-6BFD-48C9-9661-2F3622585048}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E8DDA8A-6BFD-48C9-9661-2F3622585048}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E8DDA8A-6BFD-48C9-9661-2F3622585048}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{6E8DDA8A-6BFD-48C9-9661-2F3622585048} = {BD33777F-D399-4ED8-B0AC-D79DC80FDAFE}
 		{83F647AB-EFBA-4399-86E6-54BC9D042CA8} = {BD33777F-D399-4ED8-B0AC-D79DC80FDAFE}
 		{C8DFC4BA-EE2A-47C7-8589-7F1EACA0F4AF} = {BD33777F-D399-4ED8-B0AC-D79DC80FDAFE}
+		{6E8DDA8A-6BFD-48C9-9661-2F3622585048} = {BD33777F-D399-4ED8-B0AC-D79DC80FDAFE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AD122EE7-6CC1-4CA1-B7D9-283FCB6B3935}

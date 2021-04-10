@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Windows.Forms;
 using LibraryStandard;
+using LibraryStandard.Interfaces;
 
 namespace WindowsFormsApp
 {
     public partial class General : Form
     {
+        private IMessager _messager;
+
         public General()
         {
             InitializeComponent();
+            _messager = new Messager();
         }
 
         private void sendButton_Click(object sender, EventArgs e)
@@ -22,8 +26,7 @@ namespace WindowsFormsApp
             }
 
             errorMessageLabel.Text = string.Empty;
-            var messager = new Messager();
-            messageLabel.Text = messager.GetGreetingWithDate(userName);
+            messageLabel.Text = _messager.GetGreeting(userName);
         }
     }
 }

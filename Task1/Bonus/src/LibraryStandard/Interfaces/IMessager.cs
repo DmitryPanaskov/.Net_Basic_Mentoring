@@ -5,6 +5,8 @@
     /// </summary>
     public interface IMessager
     {
-       string GetGreetingWithDate(string[] args);
+        string GetGreetingFromConsoleParameters(string[] args);
+
+        string GetGreeting(string arg);
     }
 }
