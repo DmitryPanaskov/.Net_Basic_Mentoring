@@ -7,10 +7,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{671A6FC9-A51
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{CCA1AD13-4F78-417F-9270-A080C7DA1D96}"
 	ProjectSection(SolutionItems) = preProject
-		Directory.Build.props = Directory.Build.props
-		Net_Basic_Mentoring.ruleset = Net_Basic_Mentoring.ruleset
-		README.md = README.md
-		stylecop.json = stylecop.json
+		Scripts\Directory.Build.props = Scripts\Directory.Build.props
+		Scripts\Net_Basic_Mentoring.ruleset = Scripts\Net_Basic_Mentoring.ruleset
+		Scripts\stylecop.json = Scripts\stylecop.json
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Module1", "Module1", "{D10249D4-6338-449D-B3B6-309115555E63}"
@@ -25,9 +24,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Module2", "Module2", "{6BC4
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Task1", "src\Module2\DebuggingFundamentals\Task1\Task1.csproj", "{4C8E9ED3-9086-44EF-ABC1-41E4D3C5914C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Task1.Tests", "src\Module2\DebuggingFundamentals\Task1.Tests\Task1.Tests.csproj", "{92CEDDD7-7B89-4D6A-847B-46BA760D1CB8}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Module3", "Module3", "{9D29214D-E27E-458F-99B2-6BE6EE493612}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NewFolder1", "NewFolder1", "{9D29214D-E27E-458F-99B2-6BE6EE493612}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{54764FBE-F99C-4BFF-8EA1-350F80BE8854}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Module2", "Module2", "{278A7C5F-95C3-45B4-B1F0-BA99B7A9588B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Task1.Tests", "tests\Task1.Tests\Task1.Tests.csproj", "{3D77B309-098B-4E53-B8C5-150B2E81E855}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,10 +54,10 @@ Global
 		{4C8E9ED3-9086-44EF-ABC1-41E4D3C5914C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C8E9ED3-9086-44EF-ABC1-41E4D3C5914C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C8E9ED3-9086-44EF-ABC1-41E4D3C5914C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{92CEDDD7-7B89-4D6A-847B-46BA760D1CB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{92CEDDD7-7B89-4D6A-847B-46BA760D1CB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{92CEDDD7-7B89-4D6A-847B-46BA760D1CB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{92CEDDD7-7B89-4D6A-847B-46BA760D1CB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D77B309-098B-4E53-B8C5-150B2E81E855}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D77B309-098B-4E53-B8C5-150B2E81E855}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D77B309-098B-4E53-B8C5-150B2E81E855}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D77B309-098B-4E53-B8C5-150B2E81E855}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,8 +69,9 @@ Global
 		{7FE69371-EBCF-46B4-B844-56CEE92815A2} = {D10249D4-6338-449D-B3B6-309115555E63}
 		{6BC43712-5903-47E9-9A0A-7EEE96D504CB} = {671A6FC9-A518-49C6-AF73-D78CEE014CF1}
 		{4C8E9ED3-9086-44EF-ABC1-41E4D3C5914C} = {6BC43712-5903-47E9-9A0A-7EEE96D504CB}
-		{92CEDDD7-7B89-4D6A-847B-46BA760D1CB8} = {6BC43712-5903-47E9-9A0A-7EEE96D504CB}
 		{9D29214D-E27E-458F-99B2-6BE6EE493612} = {671A6FC9-A518-49C6-AF73-D78CEE014CF1}
+		{278A7C5F-95C3-45B4-B1F0-BA99B7A9588B} = {54764FBE-F99C-4BFF-8EA1-350F80BE8854}
+		{3D77B309-098B-4E53-B8C5-150B2E81E855} = {278A7C5F-95C3-45B4-B1F0-BA99B7A9588B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4FF7939D-29E6-4F9E-9159-72A94022FC53}
