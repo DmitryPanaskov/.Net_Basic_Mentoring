@@ -10,7 +10,8 @@
         public static void Main(string[] args)
         {
             string startPoint = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\..\..\..\", "Cars"));
-            var visitor = new FileSystemVisitor(startPoint, new FileSystemProcessingStrategy(), x=>x.Name.Equals("VAG"));
+            var visitor = new FileSystemVisitor(startPoint, new FileSystemProcessingStrategy(), (info) => true);
+
             visitor.Start += (s, e) =>
             {
                 Console.WriteLine("Iteration started");
@@ -29,29 +30,29 @@
             visitor.DirectoryFinded += (s, e) =>
             {
                 Console.WriteLine("\tFounded directory: " + e.FindedItem.Name);
-                if (e.FindedItem.Name.Length == 4)
+                if (e.FindedItem.Name == "E-class")
                 {
-                    e.ActionType = ActionType.StopSearch;
+                    e.ActionType = ActionType.SkipElement;
                 }
             };
 
             visitor.FilteredFileFinded += (s, e) =>
             {
                 Console.WriteLine("Founded filtered file: " + e.FindedItem.Name);
-                if (e.FindedItem.Name == "")
-                    e.ActionType = ActionType.StopSearch;
+                if (e.FindedItem.Name == "X5")
+                    e.ActionType = ActionType.ContinueSearch;
             };
 
             visitor.FilteredDirectoryFinded += (s, e) =>
             {
                 Console.WriteLine("Founded filtered directory: " + e.FindedItem.Name);
-                if (e.FindedItem.Name.Length == 4)
-                    e.ActionType = ActionType.StopSearch;
+                if (e.FindedItem.Name == "X7")
+                    e.ActionType = ActionType.SkipElement;
             };
 
             foreach (var fileSysInfo in visitor.GetFileSystemInfoSequence())
             {
-                //Console.WriteLine(fileSysInfo);
+                Console.WriteLine(fileSysInfo);
             }
 
             Console.Read();

@@ -30,17 +30,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{54764FBE
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Module2", "Module2", "{278A7C5F-95C3-45B4-B1F0-BA99B7A9588B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Task1.Tests", "tests\Module2\Task1.Tests\Task1.Tests.csproj", "{4B927EB7-1A07-4717-82C0-B9A372EC5943}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileSystemVisitor.Console", "src\Module3\FileSystemVisitor.Console\FileSystemVisitor.Console.csproj", "{2D21F53E-42D2-4AF9-98DF-41B9609B1ED1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileSystemVisitor.Console", "src\Module3\FileSystemVisitor.Console\FileSystemVisitor.Console.csproj", "{2D21F53E-42D2-4AF9-98DF-41B9609B1ED1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileSystemVisitor.Library", "src\Module3\FileSystemVisitor.Library\FileSystemVisitor.Library\FileSystemVisitor.Library.csproj", "{B858B676-EB00-462F-BA4B-D7536213110E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileSystemVisitor.Library", "src\Module3\FileSystemVisitor.Library\FileSystemVisitor.Library\FileSystemVisitor.Library.csproj", "{B858B676-EB00-462F-BA4B-D7536213110E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileSystemVisitor.Enums", "src\Module3\FileSystemVisitor.Enums\FileSystemVisitor.Enums\FileSystemVisitor.Enums.csproj", "{89188E01-F3E5-4F82-B563-1E4C0A976C34}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileSystemVisitor.Enums", "src\Module3\FileSystemVisitor.Enums\FileSystemVisitor.Enums\FileSystemVisitor.Enums.csproj", "{89188E01-F3E5-4F82-B563-1E4C0A976C34}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Module3", "Module3", "{BECD72D8-71F3-49A4-80F0-BC11873299BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileSystemValidator.UnitTests", "tests\Module3\FileSystemVAlidator.Tests\FileSystemVAlidator.UnitTests\FileSystemValidator.UnitTests.csproj", "{9C0014F8-4DD9-4087-A483-55244799A3FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileSystemValidator.UnitTests", "tests\Module3\FileSystemVAlidator.Tests\FileSystemVAlidator.UnitTests\FileSystemValidator.UnitTests.csproj", "{9C0014F8-4DD9-4087-A483-55244799A3FC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Task1.Tests", "tests\Module2\Task1.Tests\Task1.Tests.csproj", "{5F2B9F8A-24F8-4F1D-8F14-31E99BB96008}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -64,10 +64,6 @@ Global
 		{4C8E9ED3-9086-44EF-ABC1-41E4D3C5914C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C8E9ED3-9086-44EF-ABC1-41E4D3C5914C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C8E9ED3-9086-44EF-ABC1-41E4D3C5914C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3D77B309-098B-4E53-B8C5-150B2E81E855}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3D77B309-098B-4E53-B8C5-150B2E81E855}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3D77B309-098B-4E53-B8C5-150B2E81E855}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3D77B309-098B-4E53-B8C5-150B2E81E855}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2D21F53E-42D2-4AF9-98DF-41B9609B1ED1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2D21F53E-42D2-4AF9-98DF-41B9609B1ED1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D21F53E-42D2-4AF9-98DF-41B9609B1ED1}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -84,6 +80,10 @@ Global
 		{9C0014F8-4DD9-4087-A483-55244799A3FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C0014F8-4DD9-4087-A483-55244799A3FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C0014F8-4DD9-4087-A483-55244799A3FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F2B9F8A-24F8-4F1D-8F14-31E99BB96008}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F2B9F8A-24F8-4F1D-8F14-31E99BB96008}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F2B9F8A-24F8-4F1D-8F14-31E99BB96008}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F2B9F8A-24F8-4F1D-8F14-31E99BB96008}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -97,12 +97,12 @@ Global
 		{4C8E9ED3-9086-44EF-ABC1-41E4D3C5914C} = {6BC43712-5903-47E9-9A0A-7EEE96D504CB}
 		{9D29214D-E27E-458F-99B2-6BE6EE493612} = {671A6FC9-A518-49C6-AF73-D78CEE014CF1}
 		{278A7C5F-95C3-45B4-B1F0-BA99B7A9588B} = {54764FBE-F99C-4BFF-8EA1-350F80BE8854}
-		{3D77B309-098B-4E53-B8C5-150B2E81E855} = {278A7C5F-95C3-45B4-B1F0-BA99B7A9588B}
 		{2D21F53E-42D2-4AF9-98DF-41B9609B1ED1} = {9D29214D-E27E-458F-99B2-6BE6EE493612}
 		{B858B676-EB00-462F-BA4B-D7536213110E} = {9D29214D-E27E-458F-99B2-6BE6EE493612}
 		{89188E01-F3E5-4F82-B563-1E4C0A976C34} = {9D29214D-E27E-458F-99B2-6BE6EE493612}
 		{BECD72D8-71F3-49A4-80F0-BC11873299BC} = {54764FBE-F99C-4BFF-8EA1-350F80BE8854}
 		{9C0014F8-4DD9-4087-A483-55244799A3FC} = {BECD72D8-71F3-49A4-80F0-BC11873299BC}
+		{5F2B9F8A-24F8-4F1D-8F14-31E99BB96008} = {278A7C5F-95C3-45B4-B1F0-BA99B7A9588B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4FF7939D-29E6-4F9E-9159-72A94022FC53}
