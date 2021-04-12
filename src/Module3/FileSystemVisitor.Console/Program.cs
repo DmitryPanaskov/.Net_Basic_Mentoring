@@ -9,7 +9,7 @@
     {
         public static void Main(string[] args)
         {
-            string startPoint = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\..\..\..\", "Cars")); //"D:\\Худ. Книги";
+            string startPoint = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\..\..\..\", "Cars"));
             var visitor = new FileSystemVisitor(startPoint, new FileSystemProcessingStrategy(), x=>x.Name.Equals("VAG"));
             visitor.Start += (s, e) =>
             {
@@ -38,6 +38,8 @@
             visitor.FilteredFileFinded += (s, e) =>
             {
                 Console.WriteLine("Founded filtered file: " + e.FindedItem.Name);
+                if (e.FindedItem.Name == "")
+                    e.ActionType = ActionType.StopSearch;
             };
 
             visitor.FilteredDirectoryFinded += (s, e) =>
