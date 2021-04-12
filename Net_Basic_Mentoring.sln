@@ -30,7 +30,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{54764FBE
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Module2", "Module2", "{278A7C5F-95C3-45B4-B1F0-BA99B7A9588B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Task1.Tests", "tests\Task1.Tests\Task1.Tests.csproj", "{3D77B309-098B-4E53-B8C5-150B2E81E855}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Task1.Tests", "tests\Module2\Task1.Tests\Task1.Tests.csproj", "{4B927EB7-1A07-4717-82C0-B9A372EC5943}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileSystemVisitor.Console", "src\Module3\FileSystemVisitor.Console\FileSystemVisitor.Console.csproj", "{2D21F53E-42D2-4AF9-98DF-41B9609B1ED1}"
 EndProject
