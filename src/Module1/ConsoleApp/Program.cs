@@ -7,11 +7,11 @@ namespace ConsoleApp
 {
     public static class Program
     {
-        private static IMessanger _messanger;
+        private static IMessenger _messenger;
 
         public static void Main(string[] args)
         {
-            _messanger = new Messanger();
+            _messenger = new Messenger();
             var parser = new CommandLineParser<ProgramOptions>(new CommandLineParserOptions());
             var values = parser.Parse(args);
 
@@ -20,7 +20,7 @@ namespace ConsoleApp
                 Console.Error.WriteLine("Parsing has errors...");
             }
 
-            Console.WriteLine(_messanger.GetGreeting(new[]
+            Console.WriteLine(_messenger.GetGreeting(new[]
             {
                 values.Result.FirstName,
                 values.Result.LastName,

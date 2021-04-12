@@ -1,10 +1,12 @@
 ﻿namespace LibraryStandard.Interfaces
 {
-    /// <summary>
-    /// The method outputs the greeting.
-    /// </summary>
-    public interface IMessanger
+    public interface IMessenger
     {
+        /// <summary>
+        /// Method for displaying a greeting with a date.
+        /// </summary>
+        /// <param name="args">String arguments.</param>
+        /// <returns>Returns a greeting string with a date.</returns>
         string GetGreeting(string[] args);
     }
 }

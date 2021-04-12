@@ -4,7 +4,7 @@ using LibraryStandard.Interfaces;
 
 namespace LibraryStandard
 {
-    public class Messanger : IMessanger
+    public class Messenger : IMessenger
     {
         /// <inheritdoc/>
         public string GetGreeting(string[] args)

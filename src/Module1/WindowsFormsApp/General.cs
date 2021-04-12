@@ -7,12 +7,12 @@ namespace WindowsFormsApp
 {
     public partial class General : Form
     {
-        private IMessanger _messanger;
+        private IMessenger _messenger;
 
         public General()
         {
             InitializeComponent();
-            _messanger = new Messanger();
+            _messenger = new Messenger();
         }
 
         private void sendButton_Click(object sender, EventArgs e)
@@ -26,7 +26,7 @@ namespace WindowsFormsApp
             }
 
             errorMessageLabel.Text = string.Empty;
-            messageLabel.Text = _messanger.GetGreeting(new[] { userName });
+            messageLabel.Text = _messenger.GetGreeting(new[] { userName });
         }
     }
 }
