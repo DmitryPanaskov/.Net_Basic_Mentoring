@@ -1,5 +1,4 @@
-﻿
-namespace WindowsFormsApp
+﻿namespace WindowsFormsApp
 {
     partial class General
     {
@@ -31,9 +30,9 @@ namespace WindowsFormsApp
         {
             this.sendButton = new System.Windows.Forms.Button();
             this.userNameTextBox = new System.Windows.Forms.TextBox();
-            this.messageLabel = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.errorMessageLabel = new System.Windows.Forms.Label();
+            this.messageLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // sendButton
@@ -56,15 +55,6 @@ namespace WindowsFormsApp
             this.userNameTextBox.Size = new System.Drawing.Size(237, 20);
             this.userNameTextBox.TabIndex = 1;
             // 
-            // messageLabel
-            // 
-            this.messageLabel.AutoSize = true;
-            this.messageLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.messageLabel.Location = new System.Drawing.Point(18, 147);
-            this.messageLabel.Name = "messageLabel";
-            this.messageLabel.Size = new System.Drawing.Size(0, 17);
-            this.messageLabel.TabIndex = 2;
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -83,6 +73,16 @@ namespace WindowsFormsApp
             this.errorMessageLabel.Name = "errorMessageLabel";
             this.errorMessageLabel.Size = new System.Drawing.Size(0, 13);
             this.errorMessageLabel.TabIndex = 4;
+            // 
+            // messageLabel
+            // 
+            this.messageLabel.AutoSize = true;
+            this.messageLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.messageLabel.Location = new System.Drawing.Point(18, 190);
+            this.messageLabel.Name = "messageLabel";
+            this.messageLabel.Size = new System.Drawing.Size(0, 17);
+            this.messageLabel.TabIndex = 2;
+            this.messageLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // General
             // 
@@ -105,9 +105,9 @@ namespace WindowsFormsApp
 
         private System.Windows.Forms.Button sendButton;
         private System.Windows.Forms.TextBox userNameTextBox;
-        private System.Windows.Forms.Label messageLabel;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label errorMessageLabel;
+        private System.Windows.Forms.Label messageLabel;
     }
 }
 

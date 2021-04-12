@@ -12,7 +12,7 @@
 
         public double Price { get; set; }
 
-        public override bool Equals(object? obj)
+        public override bool Equals(object obj)
         {
             if (obj is Product objectType)
             {
@@ -20,6 +20,11 @@
             }
 
             return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 }

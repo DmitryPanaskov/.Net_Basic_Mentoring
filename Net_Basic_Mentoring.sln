@@ -7,9 +7,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{671A6FC9-A51
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{CCA1AD13-4F78-417F-9270-A080C7DA1D96}"
 	ProjectSection(SolutionItems) = preProject
-		Scripts\Directory.Build.props = Scripts\Directory.Build.props
-		Scripts\Net_Basic_Mentoring.ruleset = Scripts\Net_Basic_Mentoring.ruleset
-		Scripts\stylecop.json = Scripts\stylecop.json
+		Directory.Build.props = Directory.Build.props
+		Net_Basic_Mentoring.ruleset = Net_Basic_Mentoring.ruleset
+		stylecop.json = stylecop.json
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Module1", "Module1", "{D10249D4-6338-449D-B3B6-309115555E63}"

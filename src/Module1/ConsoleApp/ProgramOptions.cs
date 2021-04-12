@@ -1,23 +1,14 @@
 ﻿using MatthiWare.CommandLine.Core.Attributes;
 
-namespace LibraryStandard.Options
+namespace ConsoleApp
 {
-    /// <summary>
-    /// Options for command line arguments.
-    /// </summary>
-    internal class ProgramOptions
+    public class ProgramOptions
     {
-        /// <summary>
-        /// Gets or sets username.
-        /// </summary>
         [Required]
         [Name("fn", "firstname")]
         [Description("User's first name")]
         public string FirstName { get; set; }
 
-        /// <summary>
-        /// Gets or sets lastname.
-        /// </summary>
         [Required]
         [Name("ln", "lastname")]
         [Description("User's last name")]
