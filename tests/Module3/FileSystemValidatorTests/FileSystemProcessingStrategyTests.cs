@@ -7,7 +7,7 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 
-namespace FileSystemValidatorTests
+namespace FileSystemVisitor.Tests
 {
     [TestFixture]
     public class FileSystemProcessingStrategyTests

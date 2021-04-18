@@ -36,7 +36,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Module3", "Module3", "{BECD
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Task1.Tests", "tests\Module2\Task1.Tests\Task1.Tests.csproj", "{5F2B9F8A-24F8-4F1D-8F14-31E99BB96008}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileSystemValidatorTests", "tests\Module3\FileSystemValidatorTests\FileSystemValidatorTests.csproj", "{5CBB1E08-717D-4977-B6F5-44CEA2905FF3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileSystemVisitor.Tests", "tests\Module3\FileSystemValidatorTests\FileSystemVisitor.Tests.csproj", "{5CBB1E08-717D-4977-B6F5-44CEA2905FF3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsFormsApp", "src\Module1\WindowsFormsApp\WindowsFormsApp.csproj", "{C2615CCD-1EA5-4F12-903D-E4126DE3CEA8}"
 EndProject
