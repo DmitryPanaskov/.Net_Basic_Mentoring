@@ -1,34 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Windows.Input;
 using LibraryStandard;
 using LibraryStandard.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
+using MatthiWare.CommandLine;
 
 namespace ConsoleApp
 {
-    public static partial class Program
+    public static class Program
     {
-        private static IMessager _messager;
-        private static ServiceProvider _serviceProvider;
-
-        public static IMessager Messager { get => _messager; set => _messager = value; }
+        private static IMessenger _messenger;
 
         public static void Main(string[] args)
         {
-            RegisterDI();
-            Messager = _serviceProvider.GetService<IMessager>();
-            var message = Messager.GetGreetingFromConsoleParameters(args);
-            Console.WriteLine(message);
-        }
+            _messenger = new Messenger();
+            var parser = new CommandLineParser<ProgramOptions>(new CommandLineParserOptions());
+            var values = parser.Parse(args);
 
-        private static void RegisterDI()
-        {
-            _serviceProvider = new ServiceCollection()
-            .AddSingleton<IMessager, Messager>()
-            .BuildServiceProvider();
+            if (values.HasErrors)
+            {
+                Console.Error.WriteLine("Parsing has errors...");
+            }
+
+            Console.WriteLine(_messenger.GetGreeting(new[]
+            {
+                values.Result.FirstName,
+                values.Result.LastName,
+            }));
+
+            Console.Read();
         }
     }
 }
