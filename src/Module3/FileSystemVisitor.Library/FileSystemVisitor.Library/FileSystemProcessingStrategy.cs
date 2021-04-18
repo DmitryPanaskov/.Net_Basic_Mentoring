@@ -1,29 +1,29 @@
-﻿using FileSystemVisitor.Enums;
+﻿using System;
+using System.IO;
+using FileSystemVisitor.Enums;
 using FileSystemVisitor.Library.EventArgs;
 using FileSystemVisitor.Library.Interfaces;
-using System;
-using System.IO;
 
 namespace FileSystemVisitor.Library
 {
     public class FileSystemProcessingStrategy : IFileSystemProcessingStrategy
     {
-        public ActionType ProcessItemFinded<TItemInfo>(
-           TItemInfo itemInfo,
-           Func<FileSystemInfo, bool> filter,
-           EventHandler<ItemFindedEventArgs<TItemInfo>> itemFinded,
-           EventHandler<ItemFindedEventArgs<TItemInfo>> filteredItemFinded,
-           Action<EventHandler<ItemFindedEventArgs<TItemInfo>>,
-           ItemFindedEventArgs<TItemInfo>> eventEmitter)
-           where TItemInfo : FileSystemInfo
+        /// <inheritdoc/>
+        public ActionType ProcessOfSearchingItem<TItemInfo>(
+            TItemInfo itemInfo,
+            Func<FileSystemInfo, bool> filter,
+            EventHandler<ItemFoundEventArgs<TItemInfo>> itemFound,
+            EventHandler<ItemFoundEventArgs<TItemInfo>> filteredItemFound,
+            Action<EventHandler<ItemFoundEventArgs<TItemInfo>>, ItemFoundEventArgs<TItemInfo>> eventEmitter)
+            where TItemInfo : FileSystemInfo
         {
-            ItemFindedEventArgs<TItemInfo> args = new ItemFindedEventArgs<TItemInfo>
+            var args = new ItemFoundEventArgs<TItemInfo>
             {
-                FindedItem = itemInfo,
+                FoundItem = itemInfo,
                 ActionType = ActionType.ContinueSearch
             };
 
-            eventEmitter(itemFinded, args);
+            eventEmitter(itemFound, args);
 
             if (args.ActionType != ActionType.ContinueSearch || filter is null)
             {
@@ -32,13 +32,13 @@ namespace FileSystemVisitor.Library
 
             if (filter(itemInfo))
             {
-                args = new ItemFindedEventArgs<TItemInfo>
+                args = new ItemFoundEventArgs<TItemInfo>
                 {
-                    FindedItem = itemInfo,
+                    FoundItem = itemInfo,
                     ActionType = ActionType.ContinueSearch
                 };
 
-                eventEmitter(filteredItemFinded, args);
+                eventEmitter(filteredItemFound, args);
 
                 return args.ActionType;
             }

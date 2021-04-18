@@ -2,10 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <UserSecretsId>c5ce8f60-2139-41ea-9b2e-4ddac66ef8a7</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentAssertions" Version="5.10.3" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
     <PackageReference Include="Moq" Version="4.16.1" />
     <PackageReference Include="NUnit" Version="3.13.1" />
@@ -13,7 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\src\Module3\FileSystemVisitor.Library\FileSystemVisitor.Library\FileSystemVisitor.Library.csproj" />
+    <ProjectReference Include="..\..\..\src\Module3\FileSystemVisitor.Enums\FileSystemVisitor.Enums\FileSystemVisitor.Enums.csproj" />
+    <ProjectReference Include="..\..\..\src\Module3\FileSystemVisitor.Library\FileSystemVisitor.Library\FileSystemVisitor.Library.csproj" />
   </ItemGroup>
 
 </Project>
