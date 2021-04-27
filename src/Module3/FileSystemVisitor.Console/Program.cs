@@ -12,13 +12,7 @@ namespace FileSystemVisitor.Console
         {
             string startPoint = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\..\..\..\", "Cars"));
 
-             var visitor = new Library.FileSystemVisitor(startPoint, x => x.Name == "w211.txt", ActionType.SkipElement);
-            // var visitor = new Library.FileSystemVisitor(startPoint, x => x.Name == "w211.txt", ActionType.StopSearch);
-            // var visitor = new Library.FileSystemVisitor(startPoint, x => x.Name == "BMW", ActionType.SkipElement);
-            // var visitor = new Library.FileSystemVisitor(startPoint, x => x.Name == "e39.txt", ActionType.StopSearch);
-            // var visitor = new Library.FileSystemVisitor(startPoint, x => x.Name == "E-class", ActionType.StopSearch);
-            // var visitor = new Library.FileSystemVisitor(startPoint, null, ActionType.StopSearch);
-            // var visitor = new Library.FileSystemVisitor(startPoint);
+            var visitor = new Library.FileSystemVisitor(startPoint);
 
             visitor.Start += (s, e) =>
             {
@@ -40,30 +34,29 @@ namespace FileSystemVisitor.Console
                 Console.WriteLine("\tFounded directory: " + e.FoundItem.Name);
             };
 
-            /*
+
             visitor.FilteredFileFound += (s, e) =>
             {
+                Console.WriteLine("\t\tFounded filtered file: " + e.FoundItem.Name);
                 if (e.FoundItem.Name == "e36")
                 {
-                    e.ActionType = ActionType.StopSearch;
-                    Console.WriteLine("Founded skipped file: " + e.FoundItem.Name);
+                    e.ActionType = ActionType.SkipElement;
                 }
             };
 
             visitor.FilteredDirectoryFound += (s, e) =>
             {
-                Console.WriteLine("Founded filtered directory: " + e.FoundItem.Name);
-                if (e.FoundItem.Name == "X7")
+                Console.WriteLine("\tFounded filtered directory: " + e.FoundItem.Name);
+                if (e.FoundItem.Name == "BMW")
                 {
                     e.ActionType = ActionType.SkipElement;
                 }
             };
-            */
-            visitor.GetFileSystemInfoSequence();
-            /*foreach (var fileSysInfo in visitor.GetFileSystemInfoSequence())
+
+            foreach (var fileSysInfo in visitor.GetFileSystemInfoSequence())
             {
             }
-            */
+
             Console.Read();
         }
     }

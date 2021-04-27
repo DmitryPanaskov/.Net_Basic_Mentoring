@@ -8,5 +8,7 @@ namespace FileSystemVisitor.Library.EventArgs
         where T : FileSystemInfo
     {
         public T FoundItem { get; set; }
+
+        public ActionType ActionType { get; set; }
     }
 }
