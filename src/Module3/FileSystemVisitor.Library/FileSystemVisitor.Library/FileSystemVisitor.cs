@@ -1,24 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using FileSystemVisitor.Enums;
+using System.Linq;
+using FileSystemVisitor.Library.Enums;
 using FileSystemVisitor.Library.EventArgs;
-using FileSystemVisitor.Library.Interfaces;
 
 namespace FileSystemVisitor.Library
 {
     public class FileSystemVisitor
     {
-        private readonly DirectoryInfo _startDirectory;
-        private readonly Func<FileSystemInfo, bool> _filter;
-        private readonly IFileSystemProcessingStrategy _fileSystemProcessingStrategy;
+        private readonly string _path;
+        private DirectoryInfo _startDirectory;
+        private readonly ActionType _filteredActionType;
+        private Func<FileSystemInfo, bool> _filter;
+        private bool isBreak = false;
 
-        public FileSystemVisitor(string path, IFileSystemProcessingStrategy fileSystemProcessingStrategy, Func<FileSystemInfo, bool> filter = null)
+        public FileSystemVisitor(string path,
+             Func<FileSystemInfo, bool> filter = null,
+             ActionType filteredActionType = ActionType.ContinueSearch)
         {
-            _startDirectory = new DirectoryInfo(path);
+            _path = path;
             _filter = filter;
-            _fileSystemProcessingStrategy = fileSystemProcessingStrategy;
-            CurrentActionType = ActionType.ContinueSearch;
+            _filteredActionType = filteredActionType;
+            _filter = filter;
         }
 
         public event EventHandler<StartEventArgs> Start;
@@ -27,75 +31,118 @@ namespace FileSystemVisitor.Library
 
         public event EventHandler<ItemFoundEventArgs<FileInfo>> FileFound;
 
-        public event EventHandler<ItemFoundEventArgs<FileInfo>> FilteredFileFound;
-
         public event EventHandler<ItemFoundEventArgs<DirectoryInfo>> DirectoryFound;
 
-        public event EventHandler<ItemFoundEventArgs<DirectoryInfo>> FilteredDirectoryFound;
-
-        private ActionType CurrentActionType { get; }
-
-        public IEnumerable<FileSystemInfo> GetFileSystemInfoSequence()
+        public virtual IEnumerable<FileSystemInfo> GetFileSystemInfoSequence()
         {
-            OnEvent(Start, new StartEventArgs());
-            var fileSystemInfos = BypassingFileSystem(_startDirectory, CurrentActionType);
+            CheckingForExistence();
+
+            Start?.Invoke(this, new StartEventArgs());
+
+            var fileSystemInfos = BypassingFileSystem(_startDirectory);
             foreach (var fileSystemInfo in fileSystemInfos)
             {
-                yield return fileSystemInfo;
+                BypassingFileSystem(_startDirectory);
             }
 
-            OnEvent(Finish, new FinishEventArgs());
+            Finish?.Invoke(this, new FinishEventArgs());
+
+            return fileSystemInfos;
         }
 
-        private IEnumerable<FileSystemInfo> BypassingFileSystem(DirectoryInfo directory, ActionType currentAction)
+        private IEnumerable<FileSystemInfo> BypassingFileSystem(DirectoryInfo directory)
         {
+            //ActionType actionType;
             var fileSystemInfos = directory.EnumerateFileSystemInfos();
             foreach (var fileSystemInfo in fileSystemInfos)
             {
+                if (isBreak)
+                {
+                    break;
+                }
+
                 if (fileSystemInfo is FileInfo file)
                 {
-                    currentAction = ProcessFile(file);
+                    ProcessFile(file);
                 }
 
                 if (fileSystemInfo is DirectoryInfo dir)
                 {
-                    currentAction = ProcessDirectory(dir);
-                    if (currentAction == ActionType.ContinueSearch)
+                    ProcessDirectory(dir);
+
+                    foreach (var innerInfo in BypassingFileSystem(dir))
                     {
-                        yield return dir;
-                        foreach (var innerInfo in BypassingFileSystem(dir, currentAction))
-                        {
-                            yield return innerInfo;
-                        }
-
-                        continue;
+                        yield return innerInfo;
                     }
-                }
 
-                if (currentAction == ActionType.StopSearch)
-                {
-                    yield break;
+                    if (isBreak)
+                    {
+                        break;
+                    }
+
+                    continue;
                 }
 
                 yield return fileSystemInfo;
             }
         }
 
-        private ActionType ProcessFile(FileInfo file)
+        private void ProcessFile(FileInfo file)
         {
-            return _fileSystemProcessingStrategy
-                .ProcessOfSearchingItem(file, _filter, FileFound, FilteredFileFound, OnEvent);
+            ProcessOfSearchingItem(file);
         }
 
-        private ActionType ProcessDirectory(DirectoryInfo directory)
+        private void ProcessDirectory(DirectoryInfo directory)
         {
-            return _fileSystemProcessingStrategy
-                .ProcessOfSearchingItem(directory, _filter, DirectoryFound, FilteredDirectoryFound, OnEvent);
+            ProcessOfSearchingItem(directory);
         }
 
-        private void OnEvent<TArgs>(EventHandler<TArgs> someEvent, TArgs args)
+
+        private void ProcessOfSearchingItem<TItemInfo>(
+           TItemInfo itemInfo)
+           where TItemInfo : FileSystemInfo
         {
-            someEvent?.Invoke(this, args);
+            if (_filter is null || !_filter(itemInfo))
+            {
+                CallEvents(itemInfo);
+                return;
+            }
+
+            if (_filter(itemInfo) && _filteredActionType == ActionType.SkipElement)
+            {
+                return;
+            }
+
+            CallEvents(itemInfo);
+
+            isBreak = true;
+        }
+
+
+        private void CheckingForExistence()
+        {
+            if (Directory.Exists(_path))
+            {
+                _startDirectory = new DirectoryInfo(_path);
+            }
+            else
+            {
+                throw new DirectoryNotFoundException($"Directory not found: {_path}");
+            }
+        }
+
+        private void CallEvents<TItemInfo>(TItemInfo itemInfo)
+           where TItemInfo : FileSystemInfo
+        {
+            if (itemInfo is FileInfo fileInfo)
+            {
+                FileFound?.Invoke(this, new ItemFoundEventArgs<FileInfo>() { FoundItem = fileInfo });
+            }
+
+            if (itemInfo is DirectoryInfo directoryInfo)
+            {
+                DirectoryFound?.Invoke(this, new ItemFoundEventArgs<DirectoryInfo>() { FoundItem = directoryInfo });
+            }
         }
     }
 }

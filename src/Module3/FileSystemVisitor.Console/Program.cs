@@ -1,18 +1,24 @@
 ﻿using System.IO;
-using FileSystemVisitor.Enums;
 using FileSystemVisitor.Library;
+using FileSystemVisitor.Library.Enums;
 
 namespace FileSystemVisitor.Console
 {
     using System;
-    using FileSystemVisitor = Library.FileSystemVisitor;
 
     public class Program
     {
         public static void Main(string[] args)
         {
             string startPoint = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\..\..\..\", "Cars"));
-            var visitor = new FileSystemVisitor(startPoint, new FileSystemProcessingStrategy(), (filter) => true);
+
+             var visitor = new Library.FileSystemVisitor(startPoint, x => x.Name == "w211.txt", ActionType.SkipElement);
+            // var visitor = new Library.FileSystemVisitor(startPoint, x => x.Name == "w211.txt", ActionType.SkipElement);
+            // var visitor = new Library.FileSystemVisitor(startPoint, x => x.Name == "BMW", ActionType.SkipElement);
+            // var visitor = new Library.FileSystemVisitor(startPoint, x => x.Name == "e39.txt", ActionType.StopSearch);
+            // var visitor = new Library.FileSystemVisitor(startPoint, x => x.Name == "E-class", ActionType.StopSearch);
+            // var visitor = new Library.FileSystemVisitor(startPoint, null, ActionType.StopSearch);
+            // var visitor = new Library.FileSystemVisitor(startPoint);
 
             visitor.Start += (s, e) =>
             {
@@ -32,18 +38,15 @@ namespace FileSystemVisitor.Console
             visitor.DirectoryFound += (s, e) =>
             {
                 Console.WriteLine("\tFounded directory: " + e.FoundItem.Name);
-                if (e.FoundItem.Name == "E-class")
-                {
-                    e.ActionType = ActionType.SkipElement;
-                }
             };
 
+            /*
             visitor.FilteredFileFound += (s, e) =>
             {
-                Console.WriteLine("Founded filtered file: " + e.FoundItem.Name);
-                if (e.FoundItem.Name == "X5")
+                if (e.FoundItem.Name == "e36")
                 {
-                    e.ActionType = ActionType.ContinueSearch;
+                    e.ActionType = ActionType.StopSearch;
+                    Console.WriteLine("Founded skipped file: " + e.FoundItem.Name);
                 }
             };
 
@@ -55,11 +58,12 @@ namespace FileSystemVisitor.Console
                     e.ActionType = ActionType.SkipElement;
                 }
             };
-
-            foreach (var fileSysInfo in visitor.GetFileSystemInfoSequence())
+            */
+            visitor.GetFileSystemInfoSequence();
+            /*foreach (var fileSysInfo in visitor.GetFileSystemInfoSequence())
             {
             }
-
+            */
             Console.Read();
         }
     }

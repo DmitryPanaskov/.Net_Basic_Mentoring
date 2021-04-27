@@ -6,7 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FileSystemVisitor.Enums\FileSystemVisitor.Enums\FileSystemVisitor.Enums.csproj" />
     <ProjectReference Include="..\FileSystemVisitor.Library\FileSystemVisitor.Library\FileSystemVisitor.Library.csproj" />
   </ItemGroup>
 

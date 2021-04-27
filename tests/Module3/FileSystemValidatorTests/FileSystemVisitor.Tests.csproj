@@ -15,7 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\Module3\FileSystemVisitor.Enums\FileSystemVisitor.Enums\FileSystemVisitor.Enums.csproj" />
     <ProjectReference Include="..\..\..\src\Module3\FileSystemVisitor.Library\FileSystemVisitor.Library\FileSystemVisitor.Library.csproj" />
   </ItemGroup>
 
