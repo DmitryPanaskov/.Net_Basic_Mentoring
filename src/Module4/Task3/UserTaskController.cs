@@ -17,7 +17,7 @@ namespace Task3
         {
             int result = _taskService.AddTaskForUser(userId, new UserTask(description));
 
-            if (result == 0)
+            if (result != 0)
             {
                 model.AddAttribute("action_result", _userException.UserExceptionHandler(result));
                 return false;
