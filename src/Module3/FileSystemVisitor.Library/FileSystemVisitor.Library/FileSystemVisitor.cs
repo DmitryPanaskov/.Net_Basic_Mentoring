@@ -52,7 +52,6 @@ namespace FileSystemVisitor.Library
 
         private IEnumerable<FileSystemInfo> BypassingFileSystem(DirectoryInfo directory)
         {
-            //ActionType actionType;
             var fileSystemInfos = directory.EnumerateFileSystemInfos();
             foreach (var fileSystemInfo in fileSystemInfos)
             {
@@ -63,12 +62,12 @@ namespace FileSystemVisitor.Library
 
                 if (fileSystemInfo is FileInfo file)
                 {
-                    ProcessFile(file);
+                    ProcessOfSearchingItem(file);
                 }
 
                 if (fileSystemInfo is DirectoryInfo dir)
                 {
-                    ProcessDirectory(dir);
+                    ProcessOfSearchingItem(dir);
 
                     foreach (var innerInfo in BypassingFileSystem(dir))
                     {
@@ -86,17 +85,6 @@ namespace FileSystemVisitor.Library
                 yield return fileSystemInfo;
             }
         }
-
-        private void ProcessFile(FileInfo file)
-        {
-            ProcessOfSearchingItem(file);
-        }
-
-        private void ProcessDirectory(DirectoryInfo directory)
-        {
-            ProcessOfSearchingItem(directory);
-        }
-
 
         private void ProcessOfSearchingItem<TItemInfo>(
            TItemInfo itemInfo)
@@ -118,19 +106,6 @@ namespace FileSystemVisitor.Library
             isBreak = true;
         }
 
-
-        private void CheckingForExistence()
-        {
-            if (Directory.Exists(_path))
-            {
-                _startDirectory = new DirectoryInfo(_path);
-            }
-            else
-            {
-                throw new DirectoryNotFoundException($"Directory not found: {_path}");
-            }
-        }
-
         private void CallEvents<TItemInfo>(TItemInfo itemInfo)
            where TItemInfo : FileSystemInfo
         {
@@ -142,6 +117,18 @@ namespace FileSystemVisitor.Library
             if (itemInfo is DirectoryInfo directoryInfo)
             {
                 DirectoryFound?.Invoke(this, new ItemFoundEventArgs<DirectoryInfo>() { FoundItem = directoryInfo });
+            }
+        }
+
+        private void CheckingForExistence()
+        {
+            if (Directory.Exists(_path))
+            {
+                _startDirectory = new DirectoryInfo(_path);
+            }
+            else
+            {
+                throw new DirectoryNotFoundException($"Directory not found: {_path}");
             }
         }
     }
