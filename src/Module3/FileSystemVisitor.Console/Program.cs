@@ -12,11 +12,11 @@ namespace FileSystemVisitor.Console
         {
             string startPoint = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\..\..\..\", "Cars"));
 
-            // var visitor = new Library.FileSystemVisitor(startPoint, x => x.Name == "w211.txt", ActionType.SkipElement);
+             var visitor = new Library.FileSystemVisitor(startPoint, x => x.Name == "w211.txt", ActionType.SkipElement);
             // var visitor = new Library.FileSystemVisitor(startPoint, x => x.Name == "w211.txt", ActionType.StopSearch);
             // var visitor = new Library.FileSystemVisitor(startPoint, x => x.Name == "BMW", ActionType.SkipElement);
             // var visitor = new Library.FileSystemVisitor(startPoint, x => x.Name == "e39.txt", ActionType.StopSearch);
-             var visitor = new Library.FileSystemVisitor(startPoint, x => x.Name == "E-class", ActionType.StopSearch);
+            // var visitor = new Library.FileSystemVisitor(startPoint, x => x.Name == "E-class", ActionType.StopSearch);
             // var visitor = new Library.FileSystemVisitor(startPoint, null, ActionType.StopSearch);
             // var visitor = new Library.FileSystemVisitor(startPoint);
 
