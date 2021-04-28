@@ -9,8 +9,8 @@ namespace FileSystemVisitor.Library
     public class FileSystemVisitor
     {
         private readonly string _path;
-        private readonly ActionType _filteredActionType;
         private readonly Func<FileSystemInfo, bool> _filter;
+        private readonly ActionType _filteredActionType;
         private DirectoryInfo _startDirectory;
         private bool isBreak;
 
@@ -63,6 +63,13 @@ namespace FileSystemVisitor.Library
 
                 result = ProcessOfSearchingItem(fileSystemInfo);
 
+
+                if (_filter(fileSystemInfo))
+                {
+                    result = _filteredActionType;
+                }
+
+
                 switch (result)
                 {
                     case ActionType.ContinueSearch:
@@ -79,9 +86,12 @@ namespace FileSystemVisitor.Library
 
                 if (fileSystemInfo is DirectoryInfo dir)
                 {
-                    foreach (var innerInfo in BypassingFileSystem(dir))
+                    if (result == ActionType.ContinueSearch)
                     {
-                        yield return innerInfo;
+                        foreach (var innerInfo in BypassingFileSystem(dir))
+                        {
+                            yield return innerInfo;
+                        }
                     }
                 }
             }
@@ -91,17 +101,11 @@ namespace FileSystemVisitor.Library
            TItemInfo itemInfo)
            where TItemInfo : FileSystemInfo
         {
-            CallEvents(itemInfo);
+            var currentActionType = CallEvents(itemInfo);
 
-            if (_filter is null || !_filter(itemInfo))
-            {
-                return ActionType.ContinueSearch;
-            }
-
-            switch (_filteredActionType)
+            switch (currentActionType)
             {
                 case ActionType.ContinueSearch:
-                    CallFilteredFileFound(itemInfo);
                     return ActionType.ContinueSearch;
                 case ActionType.SkipElement:
                     return ActionType.SkipElement;
@@ -113,7 +117,7 @@ namespace FileSystemVisitor.Library
             }
         }
 
-        private void CallEvents<TItemInfo>(TItemInfo itemInfo)
+        private ActionType CallEvents<TItemInfo>(TItemInfo itemInfo)
            where TItemInfo : FileSystemInfo
         {
             if (itemInfo is FileInfo fileInfo)
@@ -125,31 +129,6 @@ namespace FileSystemVisitor.Library
                 };
 
                 FileFound?.Invoke(this, args);
-            }
-
-            if (itemInfo is DirectoryInfo directoryInfo)
-            {
-                var args = new ItemFoundEventArgs<DirectoryInfo>
-                {
-                    FoundItem = directoryInfo,
-                    ActionType = ActionType.ContinueSearch
-                };
-
-                DirectoryFound?.Invoke(this, args);
-            }
-        }
-
-        private ActionType CallFilteredFileFound<TItemInfo>(TItemInfo itemInfo)
-            where TItemInfo : FileSystemInfo
-        {
-            if (itemInfo is FileInfo fileInfo)
-            {
-                var args = new ItemFoundEventArgs<FileInfo>
-                {
-                    FoundItem = fileInfo,
-                    ActionType = ActionType.ContinueSearch
-                };
-
                 FilteredFileFound?.Invoke(this, args);
                 return args.ActionType;
             }
@@ -162,6 +141,7 @@ namespace FileSystemVisitor.Library
                     ActionType = ActionType.ContinueSearch
                 };
 
+                DirectoryFound?.Invoke(this, args);
                 FilteredDirectoryFound?.Invoke(this, args);
                 return args.ActionType;
             }
