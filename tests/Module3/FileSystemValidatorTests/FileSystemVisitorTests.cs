@@ -60,11 +60,11 @@ namespace FileSystemVisitorTests
             var act = visitor.GetFileSystemInfoSequence().ToList();
 
             // Assert
-            act.Any(x => x.Name == "BMW").Should().BeTrue();
-            act.Any(x => x.Name == "Mercedes-Benz").Should().BeTrue();
-            act.Any(x => x.Name == "VAG").Should().BeTrue();
-            act.Any(x => x.Name == "q7.txt").Should().BeTrue();
-            act.Any(x => x.Name == "q5.txt").Should().BeTrue();
+            act.Should().Contain(x => x.Name == "BMW");
+            act.Should().Contain(x => x.Name == "Mercedes-Benz");
+            act.Should().Contain(x => x.Name == "VAG");
+            act.Should().Contain(x => x.Name == "q7.txt");
+            act.Should().Contain(x => x.Name == "q5.txt");
         }
 
         [Test]
@@ -86,7 +86,7 @@ namespace FileSystemVisitorTests
 
             // Assert
             checkerDirectory.Should().BeTrue();
-            act.Any(x => x.Name == "VAG").Should().BeFalse();
+            act.Should().NotContain(x => x.Name == "VAG");
         }
 
         [Test]
@@ -113,11 +113,11 @@ namespace FileSystemVisitorTests
 
             // Assert
             checkerDirectories.Should().BeTrue();
-            act.Any(x => x.Name == "BMW").Should().BeFalse();
-            act.Any(x => x.Name == "Mercedes-Benz").Should().BeFalse();
-            act.Any(x => x.Name == "VAG").Should().BeFalse();
-            act.Any(x => x.Name == "q7.txt").Should().BeFalse();
-            act.Any(x => x.Name == "q5.txt").Should().BeFalse();
+            act.Should().NotContain(x => x.Name == "BMW");
+            act.Should().NotContain(x => x.Name == "Mercedes-Benz");
+            act.Should().NotContain(x => x.Name == "VAG");
+            act.Should().NotContain(x => x.Name == "q7.txt");
+            act.Should().NotContain(x => x.Name == "q5.txt");
         }
 
         [Test]
@@ -139,7 +139,7 @@ namespace FileSystemVisitorTests
 
             // Assert
             checkerFile.Should().BeTrue();
-            act.Any(x => x.Name == "e39.txt").Should().BeFalse();
+            act.Should().NotContain(x => x.Name == "e39.txt");
         }
 
         [Test]
@@ -163,8 +163,8 @@ namespace FileSystemVisitorTests
 
             // Assert
             checkerFiles.Should().BeTrue();
-            act.Any(x => x.Name == "q5.txt").Should().BeFalse();
-            act.Any(x => x.Name == "q7.txt").Should().BeFalse();
+            act.Should().NotContain(x => x.Name == "q5.txt");
+            act.Should().NotContain(x => x.Name == "q7.txt");
         }
     }
 }
