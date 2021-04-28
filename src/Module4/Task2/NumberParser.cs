@@ -42,7 +42,7 @@ namespace Task2
             for (int i = 0; i < stringValue.Length; i++)
             {
                 int fraction = stringValue.Length - (i + 1);
-                number += ConvertCharToDouble(stringValue[i]) * (Math.Pow(10, fraction));
+                number += ConvertCharToDouble(stringValue[i]) * Math.Pow(10, fraction);
             }
 
             return number;

@@ -5,6 +5,7 @@ using FileSystemVisitor.Library.Enums;
 namespace FileSystemVisitor.Console
 {
     using System;
+    using System.Linq;
 
     public class Program
     {
@@ -12,7 +13,7 @@ namespace FileSystemVisitor.Console
         {
             string startPoint = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\..\..\..\", "Cars"));
 
-            var visitor = new Library.FileSystemVisitor(startPoint, x=>x.Name == "e39.txt", ActionType.SkipElement);
+            var visitor = new Library.FileSystemVisitor(startPoint, x => x.Name == "q5.txt");
 
             visitor.Start += (s, e) =>
             {
@@ -37,46 +38,32 @@ namespace FileSystemVisitor.Console
 
             visitor.FilteredFileFound += (s, e) =>
             {
-                Console.WriteLine("\t\tFounded filtered file: " + e.FoundItem.Name);
-                if (e.FoundItem.Name == "q7.txt")
-                {
-                    e.ActionType = ActionType.SkipElement;
-                }
+                e.ActionType = ActionType.StopSearch;
             };
 
             visitor.FilteredDirectoryFound += (s, e) =>
             {
-                Console.WriteLine("\tFounded filtered directory: " + e.FoundItem.Name);
-                if (e.FoundItem.Name == "vw")
-                {
-                    e.ActionType = ActionType.SkipElement;
-                }
+                e.ActionType = ActionType.SkipElement;
             };
 
-            var list = new List<FileSystemInfo>();
 
-            foreach (var fileSysInfo in visitor.GetFileSystemInfoSequence())
-            {
-                list.Add(fileSysInfo);
-            }
+            var list = visitor.GetFileSystemInfoSequence().ToList();
 
-            // --------------------- normalized directory tree ----------------
-            Console.WriteLine("\n\n\n================ Normalized Directory Tree ================");
+            Console.WriteLine("\n\nNormalized Directory Tree");
             Console.WriteLine("Iteration started");
             foreach (var item in list)
             {
                 if (item is DirectoryInfo)
                 {
-                    Console.WriteLine(item.Name);
+                    Console.WriteLine("\tFounded filtered directory: " + item.Name);
                 }
 
                 if (item is FileInfo)
                 {
-                    Console.WriteLine("\t" + item.Name);
+                    Console.WriteLine("\t\tFounded filtered file: " + item.Name);
                 }
             }
             Console.WriteLine("Iteration finished");
-            Console.WriteLine("===========================================================");
             Console.Read();
         }
     }

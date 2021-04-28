@@ -10,18 +10,14 @@ namespace FileSystemVisitor.Library
     {
         private readonly string _path;
         private readonly Func<FileSystemInfo, bool> _filter;
-        private readonly ActionType _filteredActionType;
         private DirectoryInfo _startDirectory;
         private bool isBreak;
 
         public FileSystemVisitor(
             string path,
-            Func<FileSystemInfo, bool> filter = null,
-            ActionType filteredActionType = ActionType.ContinueSearch)
+            Func<FileSystemInfo, bool> filter = null)
         {
             _path = path;
-            _filter = filter;
-            _filteredActionType = filteredActionType;
             _filter = filter;
         }
 
@@ -43,11 +39,12 @@ namespace FileSystemVisitor.Library
 
             Start?.Invoke(this, new StartEventArgs());
 
-            var fileSystemInfo = BypassingFileSystem(_startDirectory);
+            foreach (var fileSystemInfo in BypassingFileSystem(_startDirectory))
+            {
+                yield return fileSystemInfo;
+            }
 
             Finish?.Invoke(this, new FinishEventArgs());
-
-            return fileSystemInfo;
         }
 
         private IEnumerable<FileSystemInfo> BypassingFileSystem(DirectoryInfo directory)
@@ -56,19 +53,14 @@ namespace FileSystemVisitor.Library
             var result = ActionType.ContinueSearch;
             foreach (var fileSystemInfo in fileSystemInfos)
             {
+                CallEvents(fileSystemInfo);
+
                 if (isBreak)
                 {
                     break;
                 }
 
                 result = ProcessOfSearchingItem(fileSystemInfo);
-
-
-                if (_filter(fileSystemInfo))
-                {
-                    result = _filteredActionType;
-                }
-
 
                 switch (result)
                 {
@@ -101,23 +93,15 @@ namespace FileSystemVisitor.Library
            TItemInfo itemInfo)
            where TItemInfo : FileSystemInfo
         {
-            var currentActionType = CallEvents(itemInfo);
-
-            switch (currentActionType)
+            if (_filter is null || !_filter(itemInfo))
             {
-                case ActionType.ContinueSearch:
-                    return ActionType.ContinueSearch;
-                case ActionType.SkipElement:
-                    return ActionType.SkipElement;
-                case ActionType.StopSearch:
-                    isBreak = true;
-                    return ActionType.StopSearch;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                return ActionType.ContinueSearch;
             }
+
+            return CallFilteredEvents(itemInfo);
         }
 
-        private ActionType CallEvents<TItemInfo>(TItemInfo itemInfo)
+        private void CallEvents<TItemInfo>(TItemInfo itemInfo)
            where TItemInfo : FileSystemInfo
         {
             if (itemInfo is FileInfo fileInfo)
@@ -129,6 +113,31 @@ namespace FileSystemVisitor.Library
                 };
 
                 FileFound?.Invoke(this, args);
+            }
+
+            if (itemInfo is DirectoryInfo directoryInfo)
+            {
+                var args = new ItemFoundEventArgs<DirectoryInfo>
+                {
+                    FoundItem = directoryInfo,
+                    ActionType = ActionType.ContinueSearch
+                };
+
+                DirectoryFound?.Invoke(this, args);
+            }
+        }
+
+        private ActionType CallFilteredEvents<TItemInfo>(TItemInfo itemInfo)
+            where TItemInfo : FileSystemInfo
+        {
+            if (itemInfo is FileInfo fileInfo)
+            {
+                var args = new ItemFoundEventArgs<FileInfo>
+                {
+                    FoundItem = fileInfo,
+                    ActionType = ActionType.ContinueSearch
+                };
+
                 FilteredFileFound?.Invoke(this, args);
                 return args.ActionType;
             }
@@ -141,7 +150,6 @@ namespace FileSystemVisitor.Library
                     ActionType = ActionType.ContinueSearch
                 };
 
-                DirectoryFound?.Invoke(this, args);
                 FilteredDirectoryFound?.Invoke(this, args);
                 return args.ActionType;
             }
