@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using FileSystemVisitor.Library.Enums;
 
 namespace FileSystemVisitor.Console
@@ -35,7 +34,6 @@ namespace FileSystemVisitor.Console
                 Console.WriteLine("\tFounded directory: " + e.FoundItem.Name);
             };
 
-
             visitor.FilteredFileFound += (s, e) =>
             {
                 e.ActionType = ActionType.StopSearch;
@@ -45,7 +43,6 @@ namespace FileSystemVisitor.Console
             {
                 e.ActionType = ActionType.SkipElement;
             };
-
 
             var list = visitor.GetFileSystemInfoSequence().ToList();
 

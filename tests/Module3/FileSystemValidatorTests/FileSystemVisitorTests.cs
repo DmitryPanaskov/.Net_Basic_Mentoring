@@ -1,30 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.IO;
-using Moq;
+using System.Linq;
+using FileSystemVisitor.Library.Enums;
+using FluentAssertions;
 using NUnit.Framework;
 
-namespace FileSystemVisitor.Test
+namespace FileSystemVisitorTests
 {
-    using System.Linq;
-
-    using FileSystemVisitor.Library;
-    using FileSystemVisitor.Library.Enums;
-
-    using FluentAssertions;
+    using FileSystemVisitor = FileSystemVisitor.Library.FileSystemVisitor;
 
     [TestFixture]
-    public class VisitorTests
+    public class FileSystemVisitorTests
     {
-        private Mock<FileSystemInfo> _fileSystemInfoMock;
         string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\..\..\..\..\..\src\Module3\", "Cars"));
-
-        [SetUp]
-        public void TestInit()
-        {
-            _fileSystemInfoMock = new Mock<FileSystemInfo>();
-        }
 
         [Test]
         public void GetFileSystemInfoSequence_WhenPathIsNull_ThrowDirectoryNotFoundException()
