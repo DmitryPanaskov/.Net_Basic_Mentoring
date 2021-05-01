@@ -12,11 +12,7 @@ namespace Task2
             }
 
             stringValue = stringValue.Trim();
-            return ConvertStringToInt(stringValue);
-        }
 
-        private int ConvertStringToInt(string stringValue)
-        {
             if (string.IsNullOrEmpty(stringValue))
             {
                 throw new FormatException();
