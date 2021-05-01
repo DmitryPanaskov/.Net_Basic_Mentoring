@@ -4,22 +4,23 @@ namespace Task3
 {
     public class UserTaskController
     {
-        private readonly UserTaskService _taskService;
-        private readonly UserException _userException;
+        private readonly IUserTaskService _taskService;
 
-        public UserTaskController(UserTaskService taskService)
+        public UserTaskController(IUserTaskService taskService)
         {
             _taskService = taskService;
-            _userException = new UserException();
         }
 
         public bool AddTaskForUser(int userId, string description, IResponseModel model)
         {
-            int result = _taskService.AddTaskForUser(userId, new UserTask(description));
-
-            if (result != 0)
+            try
             {
-                model.AddAttribute("action_result", _userException.UserExceptionHandler(result));
+                _taskService.AddTaskForUser(userId, new UserTask(description));
+
+            }
+            catch (UserException ex)
+            {
+                model.AddAttribute("action_result", ex.Message);
                 return false;
             }
 

@@ -45,6 +45,7 @@ namespace Task2.Tests
         [TestCase("-+12034")]
         [TestCase("+-12034")]
         [TestCase("0-12034")]
+        [TestCase("g134")]
         public void Parse_InvalidNumberFormat_ThrowFormatException(string stringValue)
         {
             Assert.That(() => _parser.Parse(stringValue), Throws.InstanceOf<FormatException>());

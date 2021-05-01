@@ -3,7 +3,7 @@ using Task3.DoNotChange;
 
 namespace Task3
 {
-    public class UserTaskService
+    public class UserTaskService : IUserTaskService
     {
         private readonly IUserDao _userDao;
 
@@ -12,18 +12,18 @@ namespace Task3
             _userDao = userDao;
         }
 
-        public int AddTaskForUser(int userId, UserTask task)
+        public void AddTaskForUser(int userId, UserTask task)
         {
             if (userId < 0)
             {
-                return -1;
+                throw new UserException("Invalid userId");
             }
 
             var user = _userDao.GetUser(userId);
 
             if (user == null)
             {
-                return -2;
+                throw new UserException("User not found");
             }
 
             var tasks = user.Tasks;
@@ -31,13 +31,11 @@ namespace Task3
             {
                 if (string.Equals(task.Description, t.Description, StringComparison.OrdinalIgnoreCase))
                 {
-                    return -3;
+                    throw new UserException("The task already exists");
                 }
             }
 
             tasks.Add(task);
-
-            return 0;
         }
     }
 }
