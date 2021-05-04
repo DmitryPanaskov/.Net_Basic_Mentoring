@@ -39,19 +39,15 @@ namespace Task2
                     throw new FormatException();
                 }
 
-                int fraction = stringValue.Length - (i + 1);
-
                 number = number * 10 + char.GetNumericValue(stringValue[i]);
             }
 
             number = number * sign;
 
-            if (number > int.MaxValue || number < int.MinValue)
+            checked
             {
-                throw new OverflowException();
+                return (int)number;
             }
-
-            return (int)number;
         }
     }
 }
