@@ -14,7 +14,8 @@ namespace Task3.Tests
         {
             _userDao = new UserDaoStub();
             var taskService = new UserTaskService(_userDao);
-            _controller = new UserTaskController(taskService);
+            var exceptionService = new ExceptionService();
+            _controller = new UserTaskController(taskService, exceptionService);
         }
 
         [Test]
