@@ -18,11 +18,11 @@ namespace Task2
                 throw new FormatException();
             }
 
-            bool isNegative = false;
+            int sign = 1;
 
             if (stringValue[0] == '-')
             {
-                isNegative = true;
+                sign = -1;
                 stringValue = stringValue.Remove(0, 1);
             }
             else if (stringValue[0] == '+')
@@ -39,22 +39,15 @@ namespace Task2
                     throw new FormatException();
                 }
 
-                int fraction = stringValue.Length - (i + 1);
-
-                number += char.GetNumericValue(stringValue[i]) * Math.Pow(10, fraction);
+                number = number * 10 + char.GetNumericValue(stringValue[i]);
             }
 
-            if (isNegative)
+            number = number * sign;
+
+            checked
             {
-                number = number * -1;
+                return (int)number;
             }
-
-            if (number > int.MaxValue || number < int.MinValue)
-            {
-                throw new OverflowException();
-            }
-
-            return (int)number;
         }
     }
 }

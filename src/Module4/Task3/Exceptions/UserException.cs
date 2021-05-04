@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
 using System.Runtime.Serialization;
 
 namespace Task3
 {
     [Serializable]
-    public class UserException : Exception
+    public class UserException : Exception, ISerializable
     {
+
         public UserException()
         {
         }
