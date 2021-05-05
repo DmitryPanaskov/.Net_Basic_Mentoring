@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 using Task1.DoNotChange;
 
 namespace Task1
@@ -9,7 +11,9 @@ namespace Task1
         // Выдайте список всех клиентов, чей суммарный оборот (сумма всех заказов) превосходит некоторую величину X.
         public static IEnumerable<Customer> Linq1(IEnumerable<Customer> customers, decimal limit)
         {
-            throw new NotImplementedException();
+            ChekNull(customers);
+
+            return customers.Where(customer => customer.Orders.Sum(order => order.Total) > limit);
         }
 
         // Для каждого клиента составьте список поставщиков, находящихся в той же стране и том же городе.
@@ -18,7 +22,12 @@ namespace Task1
             IEnumerable<Customer> customers,
             IEnumerable<Supplier> suppliers)
         {
-            throw new NotImplementedException();
+            ChekNull(customers);
+            ChekNull(suppliers);
+
+            return customers.Select(customer => (customer,
+                                                    suppliers.Where(supplier => supplier.City == customer.City &&
+                                                        supplier.Country == customer.Country)));
         }
 
         // Для каждого клиента составьте список поставщиков, находящихся в той же стране и том же городе.
@@ -27,13 +36,21 @@ namespace Task1
             IEnumerable<Customer> customers,
             IEnumerable<Supplier> suppliers)
         {
-            throw new NotImplementedException();
+            ChekNull(customers);
+            ChekNull(suppliers);
+
+            return from customer in customers
+                   join supplier in suppliers on new { customer.City, customer.Country }
+                       equals new { supplier.City, supplier.Country } into gr
+                   select (customer, gr);
         }
 
         // Найдите всех клиентов, у которых были заказы, превосходящие по сумме величину X.
         public static IEnumerable<Customer> Linq3(IEnumerable<Customer> customers, decimal limit)
         {
-            throw new NotImplementedException();
+            ChekNull(customers);
+
+            return customers.Where(customer => customer.Orders.Any(order => order.Total > limit));
         }
 
         // Выдайте список клиентов с указанием, начиная с какой даты они стали клиентами
@@ -41,7 +58,11 @@ namespace Task1
         public static IEnumerable<(Customer customer, DateTime dateOfEntry)> Linq4(
             IEnumerable<Customer> customers)
         {
-            throw new NotImplementedException();
+            ChekNull(customers);
+
+            return from customer in customers
+                   where customer.Orders.Any()
+                   select (customer, customer.Orders.First().OrderDate);
         }
 
         //Сделайте предыдущее задание, но выдайте список отсортированным по году,
@@ -49,7 +70,13 @@ namespace Task1
         public static IEnumerable<(Customer customer, DateTime dateOfEntry)> Linq5(
             IEnumerable<Customer> customers)
         {
-            throw new NotImplementedException();
+            ChekNull(customers);
+
+            return from customer in customers
+                   where customer.Orders.Any()
+                   orderby customer.Orders.FirstOrDefault()?.OrderDate.Year, customer.Orders.FirstOrDefault()?.OrderDate.Month,
+                       customer.Orders.Sum(order => order.Total) descending, customer.CompanyName
+                   select (customer, customer.Orders.First().OrderDate);
         }
 
         // Укажите всех клиентов, у которых указан нецифровой почтовый код или
@@ -57,25 +84,35 @@ namespace Task1
         // (для простоты считаем, что это равнозначно «нет круглых скобочек в начале»).
         public static IEnumerable<Customer> Linq6(IEnumerable<Customer> customers)
         {
-            throw new NotImplementedException();
+            ChekNull(customers);
+
+            return from customer in customers
+                   where customer.PostalCode == null || customer.PostalCode.Any(p => !char.IsDigit(p))
+                                                     || string.IsNullOrWhiteSpace(customer.Region)
+                                                     || new Regex(@"^\s*(\s*\b+\s*)").IsMatch(customer.Phone)
+                   select customer;
         }
 
         // Сгруппируйте все продукты по категориям, внутри – по наличию на складе,
         // внутри последней группы отсортируйте по стоимости
         public static IEnumerable<Linq7CategoryGroup> Linq7(IEnumerable<Product> products)
         {
-            /* example of Linq7result
+            ChekNull(products);
 
-             category - Beverages
-	            UnitsInStock - 39
-		            price - 18.0000
-		            price - 19.0000
-	            UnitsInStock - 17
-		            price - 18.0000
-		            price - 19.0000
-             */
-
-            throw new NotImplementedException();
+            return from prod in products
+                   group prod by prod.Category into category
+                   select new Linq7CategoryGroup
+                   {
+                       Category = category.Key,
+                       UnitsInStockGroup = from exist in category
+                                           group exist.UnitPrice by exist.UnitsInStock
+                                                      into stock
+                                           select new Linq7UnitsInStockGroup
+                                           {
+                                               UnitsInStock = stock.Key,
+                                               Prices = stock,
+                                           },
+                   };
         }
 
         // Сгруппируйте товары по группам «дешевые», «средняя цена», «дорогие».
@@ -86,7 +123,13 @@ namespace Task1
             decimal middle,
             decimal expensive)
         {
-            throw new NotImplementedException();
+            ChekNull(products);
+
+            var categories = new List<decimal> { cheap, middle, expensive };
+
+            return from prod in products
+                   group prod by categories.First(cat => prod.UnitPrice <= cat) into output
+                   select (output.Key, output.Select(product => product).AsEnumerable());
         }
 
         // Рассчитайте среднюю прибыльность каждого города (средняя сумма заказов на каждого клиента)
@@ -94,14 +137,33 @@ namespace Task1
         public static IEnumerable<(string city, int averageIncome, int averageIntensity)> Linq9(
             IEnumerable<Customer> customers)
         {
-            throw new NotImplementedException();
+            ChekNull(customers);
+
+            return from customer in customers
+                   group customer by customer.City into cityGroup
+                   select (cityGroup.Key,
+                              Convert.ToInt32(cityGroup.Average(customer => customer.Orders.Sum(order => order.Total))),
+                              Convert.ToInt32(cityGroup.Average(customer => customer.Orders.Length)));
         }
 
         // Соберите строку, состоящую из уникальных названий стран поставщиков,
         // отсортированную сначала по длине, потом по названию страны.
         public static string Linq10(IEnumerable<Supplier> suppliers)
         {
-            throw new NotImplementedException();
+            ChekNull(suppliers);
+
+            return string.Join("", suppliers.Select(sup => sup.Country)
+                                                       .Distinct()
+                                                       .OrderBy(country => country.Length)
+                                                       .ThenBy(country => country));
+        }
+
+        private static void ChekNull<T>(T t)
+        {
+            if (t is null)
+            {
+                throw new ArgumentNullException(nameof(t));
+            }
         }
     }
 }
