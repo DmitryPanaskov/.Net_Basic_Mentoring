@@ -43,9 +43,9 @@ namespace Task2
 
                     number = number * 10 + (int)char.GetNumericValue(stringValue[i]) * sign;
                 }
-
-                return number;
             }
+
+            return number;
         }
     }
 }
