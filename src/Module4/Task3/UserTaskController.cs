@@ -20,7 +20,7 @@ namespace Task3
             {
                 _taskService.AddTaskForUser(userId, new UserTask(description));
             }
-            catch (Exception ex) when(new UserExceptionService(ex).ExceptionHandled())
+            catch (UserException ex)
             {
                 model.AddAttribute("action_result", ex.Message);
                 return false;
