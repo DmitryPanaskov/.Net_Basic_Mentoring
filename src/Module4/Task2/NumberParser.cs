@@ -30,23 +30,21 @@ namespace Task2
                 stringValue = stringValue.Remove(0, 1);
             }
 
-            double number = 0;
-
-            for (int i = 0; i < stringValue.Length; i++)
-            {
-                if (char.GetNumericValue(stringValue[i]) == -1)
-                {
-                    throw new FormatException();
-                }
-
-                number = number * 10 + char.GetNumericValue(stringValue[i]);
-            }
-
-            number = number * sign;
+            int number = 0;
 
             checked
             {
-                return (int)number;
+                for (int i = 0; i < stringValue.Length; i++)
+                {
+                    if (char.GetNumericValue(stringValue[i]) == -1)
+                    {
+                        throw new FormatException();
+                    }
+
+                    number = number * 10 + (int)char.GetNumericValue(stringValue[i]) * sign;
+                }
+
+                return number;
             }
         }
     }
