@@ -8,10 +8,12 @@ namespace Task3
     public class UserTaskController
     {
         private readonly IUserTaskService _taskService;
+        private readonly IExceptionHandler _exceptionHandler;
 
-        public UserTaskController(IUserTaskService taskService)
+        public UserTaskController(IUserTaskService taskService, ExceptionHandler exceptionHandler)
         {
             _taskService = taskService;
+            _exceptionHandler = exceptionHandler;
         }
 
         public bool AddTaskForUser(int userId, string description, IResponseModel model)
@@ -22,7 +24,7 @@ namespace Task3
             }
             catch (UserException ex)
             {
-                model.AddAttribute("action_result", ex.Message);
+                _exceptionHandler.Handle(ex, model);
                 return false;
             }
 
