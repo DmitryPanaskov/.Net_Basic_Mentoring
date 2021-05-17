@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using Task3.DoNotChange;
+using Task3.Interfaces;
 using Task3.Tests.Stubs;
 
 namespace Task3.Tests
@@ -14,7 +15,8 @@ namespace Task3.Tests
         {
             _userDao = new UserDaoStub();
             var taskService = new UserTaskService(_userDao);
-            _controller = new UserTaskController(taskService);
+            var exceptionHandler = new ExceptionHandler();
+            _controller = new UserTaskController(taskService, exceptionHandler);
         }
 
         [Test]
