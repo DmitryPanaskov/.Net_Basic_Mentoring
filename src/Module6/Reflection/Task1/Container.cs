@@ -10,10 +10,6 @@ namespace Task1
     {
         private readonly List<Type> _types = new List<Type>();
 
-        /// <summary>
-        /// Method for adding assembly.
-        /// </summary>
-        /// <param name="assembly">Input assembly.</param>
         public void AddAssembly(Assembly assembly)
         {
             CheckNull(assembly);
@@ -21,20 +17,13 @@ namespace Task1
             _types.AddRange(assembly.GetTypes().ToList());
         }
 
-        /// <summary>
-        /// Method for adding type.
-        /// </summary>
-        /// <param name="type">Input type.</param>
         public void AddType(Type type)
         {
+            CheckNull(type);
+
             _types.Add(type);
         }
 
-        /// <summary>
-        /// Method for adding type based on parent type.
-        /// </summary>
-        /// <param name="type">Input type.</param>
-        /// <param name="baseType">Input base type.</param>
         public void AddType(Type type, Type baseType)
         {
             CheckNull(type, baseType);
@@ -43,11 +32,6 @@ namespace Task1
             _types.Add(baseType);
         }
 
-        /// <summary>
-        /// Get implementation of dependency.
-        /// </summary>
-        /// <typeparam name="T">Type of interface.</typeparam>
-        /// <returns>Type of implementation.</returns>
         public T Get<T>()
         {
             if (!_types.Any() || !_types.Any(type => typeof(T) == type))
@@ -55,14 +39,14 @@ namespace Task1
                 throw new IoCException("You don't registered dependency with this type");
             }
 
-            return (T)this.GetInstance(typeof(T));
+            return (T)GetInstance(typeof(T));
         }
 
         private object GetInstance(Type type)
         {
             if (type.IsInterface)
             {
-                type = this.GetInterface(type);
+                type = GetInterface(type);
             }
 
             if (type.IsClass)
@@ -90,16 +74,16 @@ namespace Task1
                     {
                         foreach (var parameter in parameters)
                         {
-                            var propDependensy = this.GetTypeIfExist(type => type == parameter.ParameterType);
+                            var propDependensy = GetTypeIfExist(type => type == parameter.ParameterType);
 
                             if (propDependensy.IsInterface)
                             {
-                                propDependensy = this.GetInterface(propDependensy);
+                                propDependensy = GetInterface(propDependensy);
                             }
 
                             if (propDependensy.IsClass)
                             {
-                                var propInstanse = this.GetInstance(propDependensy);
+                                var propInstanse = GetInstance(propDependensy);
                                 parameterInstanses.Add(propInstanse);
                             }
                         }
@@ -108,7 +92,7 @@ namespace Task1
                     return ctor.Invoke(parameterInstanses.ToArray());
                 }
 
-                var tClass = this.GetTypeIfExist(item => item == type);
+                var tClass = GetTypeIfExist(item => item == type);
                 var tClassInstanse = Activator.CreateInstance(tClass);
 
                 var properties = tClass.GetProperties().Where(prop => prop.GetCustomAttributes<ImportAttribute>().Any());
@@ -117,16 +101,16 @@ namespace Task1
                 {
                     foreach (var property in properties)
                     {
-                        var propDependensy = this.GetTypeIfExist(type => type == property.PropertyType);
+                        var propDependensy = GetTypeIfExist(type => type == property.PropertyType);
 
                         if (propDependensy.IsInterface)
                         {
-                            propDependensy = this.GetInterface(propDependensy);
+                            propDependensy = GetInterface(propDependensy);
                         }
 
                         if (propDependensy.IsClass)
                         {
-                            var propInstanse = this.GetInstance(propDependensy);
+                            var propInstanse = GetInstance(propDependensy);
                             property.SetValue(tClassInstanse, propInstanse, null);
                         }
                     }
@@ -142,7 +126,7 @@ namespace Task1
         {
             if (_types.Any(item => type.IsAssignableFrom(item)))
             {
-                return this.GetTypeIfExist(item => type.IsAssignableFrom(item) &&
+                return GetTypeIfExist(item => type.IsAssignableFrom(item) &&
                                                    item.GetCustomAttribute<ExportAttribute>()?.Contract == type);
             }
 
@@ -152,17 +136,19 @@ namespace Task1
         private Type GetTypeIfExist(Func<Type, bool> predicate = null)
         {
             var elements = _types.Where(predicate).ToList();
-            if (elements.Any())
-            {
-                if (elements.Count > 1)
-                {
-                    throw new IoCException($"You have more that one registered dependensy");
-                }
 
-                return elements.First();
+            if (!elements.Any())
+            {
+                throw new IoCException($"You can't get type from registered list of types.");
             }
 
-            throw new IoCException($"You can't get type from registered list of types.");
+            if (elements.Count > 1)
+            {
+                throw new IoCException($"You have more that one registered dependensy");
+            }
+
+            return elements.First();
+
         }
 
         private void CheckNull<T>(params T[] t)

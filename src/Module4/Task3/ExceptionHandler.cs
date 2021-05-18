@@ -12,17 +12,30 @@ namespace Task3
         private static Dictionary<Type, Action<UserException, IResponseModel>> dict =
             new Dictionary<Type, Action<UserException, IResponseModel>>
             {
-                { typeof(UserNotFound), (ex, model) => model.AddAttribute("action_result", ex.Message) },
+                {
+                    typeof(UserNotFound), (ex, model) =>
+                    {
+                        // Log();
+                        model.AddAttribute("action_result", ex.Message);
+                    }
+                },
 
-                { typeof(InvalidUserIdException), (ex, model) =>
+                {
+                    typeof(InvalidUserIdException), (ex, model) =>
                     {
                         Log();
                         model.AddAttribute("action_result", ex.Message);
                     }
                 },
 
-                { typeof(TaskAlreadyExists), (ex, model) => throw new Exception("some new message") },
-        };
+                {
+                    typeof(TaskAlreadyExists), (ex, model) =>
+                    {
+                         // Log();
+                        model.AddAttribute("action_result", ex.Message);
+                    }
+                },
+            };
 
         public void Handle(UserException ex, IResponseModel model)
         {
