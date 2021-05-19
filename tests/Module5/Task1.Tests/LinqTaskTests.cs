@@ -157,14 +157,19 @@ namespace Task1.Tests
                     {
                         new Linq7UnitsInStockGroup
                         {
+                            UnitsInStock = 17,
+                            Prices = new [] { 18.0000M }
+                        },
+                        new Linq7UnitsInStockGroup
+                        {
                             UnitsInStock = 39,
                             Prices = new [] { 19.0000M }
                         },
                         new Linq7UnitsInStockGroup
                         {
-                            UnitsInStock = 17,
-                            Prices = new [] { 18.0000M }
-                        }
+                            UnitsInStock = 5,
+                            Prices = new [] { 1.0000M }
+                        },
                     }
                 },
                 new Linq7CategoryGroup
@@ -174,14 +179,19 @@ namespace Task1.Tests
                     {
                         new Linq7UnitsInStockGroup
                         {
+                            UnitsInStock = 13,
+                            Prices = new [] { 30.0000M }
+                        },
+                        new Linq7UnitsInStockGroup
+                        {
                             UnitsInStock = 15,
                             Prices = new [] { 10.0000M, 40.0000M }
                         },
                         new Linq7UnitsInStockGroup
                         {
-                            UnitsInStock = 13,
-                            Prices = new [] { 30.0000M }
-                        }
+                            UnitsInStock = 10,
+                            Prices = new [] { 5.0000M, 4.0000M }
+                        },
                     }
                 }
             };

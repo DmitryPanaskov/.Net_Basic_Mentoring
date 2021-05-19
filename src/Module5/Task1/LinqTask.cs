@@ -25,9 +25,13 @@ namespace Task1
             ChekNull(customers);
             ChekNull(suppliers);
 
-            return customers.Select(customer => (customer,
-                                                    suppliers.Where(supplier => supplier.City == customer.City &&
-                                                        supplier.Country == customer.Country)));
+            return customers.Select(customer =>
+            (
+                customer,
+                suppliers.Where(supplier =>
+                    supplier.City == customer.City
+                    && supplier.Country == customer.Country)
+            ));
         }
 
         // Для каждого клиента составьте список поставщиков, находящихся в той же стране и том же городе.
@@ -72,11 +76,8 @@ namespace Task1
         {
             ChekNull(customers);
 
-            return from customer in customers
-                   where customer.Orders.Any()
-                   orderby customer.Orders.FirstOrDefault()?.OrderDate.Year, customer.Orders.FirstOrDefault()?.OrderDate.Month,
-                       customer.Orders.Sum(order => order.Total) descending, customer.CompanyName
-                   select (customer, customer.Orders.First().OrderDate);
+            return customers.Where(c => c.Orders.Any())
+                .Select(customer => (customer, customer.Orders.First().OrderDate)).OrderBy(x => x.OrderDate.Year).ThenBy(x => x.OrderDate.Month).ThenBy(x => x.OrderDate.Day).ThenByDescending(x => x.customer.Orders.Sum(y => y.Total)).ThenBy(x => x.customer.CompanyName);
         }
 
         // Укажите всех клиентов, у которых указан нецифровой почтовый код или
@@ -86,11 +87,12 @@ namespace Task1
         {
             ChekNull(customers);
 
-            return from customer in customers
-                   where customer.PostalCode == null || customer.PostalCode.Any(p => !char.IsDigit(p))
-                                                     || string.IsNullOrWhiteSpace(customer.Region)
-                                                     || new Regex(@"^\s*(\s*\b+\s*)").IsMatch(customer.Phone)
-                   select customer;
+            var phoneCodeFormatExpression = new Regex(@"^\(\s*\d+\s*\)");
+
+            return customers.Where(cust =>
+                ValidatePhone(cust.PostalCode)
+                || string.IsNullOrEmpty(cust.Region)
+                || !phoneCodeFormatExpression.IsMatch(cust.Phone));
         }
 
         // Сгруппируйте все продукты по категориям, внутри – по наличию на складе,
@@ -110,7 +112,7 @@ namespace Task1
                                            select new Linq7UnitsInStockGroup
                                            {
                                                UnitsInStock = stock.Key,
-                                               Prices = stock,
+                                               Prices = stock.OrderBy(x => x)
                                            },
                    };
         }
@@ -128,7 +130,7 @@ namespace Task1
             var categories = new List<decimal> { cheap, middle, expensive };
 
             return from prod in products
-                   group prod by categories.First(cat => prod.UnitPrice <= cat) into output
+                   group prod by categories.First(categorie => prod.UnitPrice <= categorie) into output
                    select (output.Key, output.Select(product => product).AsEnumerable());
         }
 
@@ -142,8 +144,8 @@ namespace Task1
             return from customer in customers
                    group customer by customer.City into cityGroup
                    select (cityGroup.Key,
-                              Convert.ToInt32(cityGroup.Average(customer => customer.Orders.Sum(order => order.Total))),
-                              Convert.ToInt32(cityGroup.Average(customer => customer.Orders.Length)));
+                              Round(cityGroup.Average(customer => customer.Orders.Sum(order => order.Total))),
+                              Round(cityGroup.Average(customer => customer.Orders.Length)));
         }
 
         // Соберите строку, состоящую из уникальных названий стран поставщиков,
@@ -156,6 +158,21 @@ namespace Task1
                                                        .Distinct()
                                                        .OrderBy(country => country.Length)
                                                        .ThenBy(country => country));
+        }
+
+        private static int Round(decimal value)
+        {
+            return (int)Math.Round(value, 0, MidpointRounding.ToEven);
+        }
+
+        private static int Round(double value)
+        {
+            return (int)Math.Round(value, 0, MidpointRounding.ToEven);
+        }
+
+        private static bool ValidatePhone(string phoneNumber)
+        {
+            return phoneNumber.Any(p => !char.IsDigit(p));
         }
 
         private static void ChekNull<T>(T t)
