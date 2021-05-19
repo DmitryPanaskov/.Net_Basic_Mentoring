@@ -53,20 +53,20 @@ namespace Task1
             {
                 if (type.GetCustomAttribute<ImportConstructorAttribute>() != null)
                 {
-                    var ctors = type.GetConstructors().ToList();
+                    var constructors = type.GetConstructors().ToList();
 
-                    if (!ctors.Any())
+                    if (!constructors.Any())
                     {
                         throw new IoCException($"You don't have public constructors in class {type.Name}");
                     }
 
-                    if (ctors.Count > 1)
+                    if (constructors.Count > 1)
                     {
                         throw new IoCException($"You have more than one public constructor in class {type.Name}");
                     }
 
-                    var ctor = ctors.First();
-                    var parameters = ctor.GetParameters();
+                    var constructor = constructors.First();
+                    var parameters = constructor.GetParameters();
 
                     var parameterInstanses = new List<object>();
 
@@ -89,7 +89,7 @@ namespace Task1
                         }
                     }
 
-                    return ctor.Invoke(parameterInstanses.ToArray());
+                    return constructor.Invoke(parameterInstanses.ToArray());
                 }
 
                 var tClass = GetTypeIfExist(item => item == type);
