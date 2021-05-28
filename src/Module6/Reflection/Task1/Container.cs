@@ -8,33 +8,35 @@ namespace Task1
 {
     public class Container
     {
-        private readonly List<Type> _types = new List<Type>();
+        private readonly HashSet<Type> _types = new HashSet<Type>();
 
         public void AddAssembly(Assembly assembly)
         {
             CheckNull(assembly);
 
-            _types.AddRange(assembly.GetTypes().ToList());
+            foreach (var item in assembly.GetTypes())
+            {
+                AddIfNotExist(item);
+            }
         }
 
         public void AddType(Type type)
         {
             CheckNull(type);
-
-            _types.Add(type);
+            AddIfNotExist(type);
         }
 
         public void AddType(Type type, Type baseType)
         {
             CheckNull(type, baseType);
 
-            _types.Add(type);
-            _types.Add(baseType);
+            AddIfNotExist(type);
+            AddIfNotExist(baseType);
         }
 
         public T Get<T>()
         {
-            if (!_types.Any() || !_types.Any(type => typeof(T) == type))
+            if (!_types.Any(type => typeof(T) == type))
             {
                 throw new IoCException("You don't registered dependency with this type");
             }
@@ -42,95 +44,71 @@ namespace Task1
             return (T)GetInstance(typeof(T));
         }
 
-        private object GetInstance(Type type)
+        private object GetInstance(Type requestedType)
         {
-            if (type.IsInterface)
+            if (requestedType.IsInterface)
             {
-                type = GetInterface(type);
+                requestedType = GetImplementationInterfaceType(requestedType);
             }
 
-            if (type.IsClass)
+            if (requestedType.IsClass)
             {
-                if (type.GetCustomAttribute<ImportConstructorAttribute>() != null)
-                {
-                    var constructors = type.GetConstructors().ToList();
-
-                    if (!constructors.Any())
-                    {
-                        throw new IoCException($"You don't have public constructors in class {type.Name}");
-                    }
-
-                    if (constructors.Count > 1)
-                    {
-                        throw new IoCException($"You have more than one public constructor in class {type.Name}");
-                    }
-
-                    var constructor = constructors.First();
-                    var parameters = constructor.GetParameters();
-
-                    var parameterInstanses = new List<object>();
-
-                    if (parameters.Any())
-                    {
-                        foreach (var parameter in parameters)
-                        {
-                            var propDependensy = GetTypeIfExist(type => type == parameter.ParameterType);
-
-                            if (propDependensy.IsInterface)
-                            {
-                                propDependensy = GetInterface(propDependensy);
-                            }
-
-                            if (propDependensy.IsClass)
-                            {
-                                var propInstanse = GetInstance(propDependensy);
-                                parameterInstanses.Add(propInstanse);
-                            }
-                        }
-                    }
-
-                    return constructor.Invoke(parameterInstanses.ToArray());
-                }
-
-                var tClass = GetTypeIfExist(item => item == type);
-                var tClassInstanse = Activator.CreateInstance(tClass);
-
-                var properties = tClass.GetProperties().Where(prop => prop.GetCustomAttributes<ImportAttribute>().Any());
-
-                if (properties.Any())
-                {
-                    foreach (var property in properties)
-                    {
-                        var propDependensy = GetTypeIfExist(type => type == property.PropertyType);
-
-                        if (propDependensy.IsInterface)
-                        {
-                            propDependensy = GetInterface(propDependensy);
-                        }
-
-                        if (propDependensy.IsClass)
-                        {
-                            var propInstanse = GetInstance(propDependensy);
-                            property.SetValue(tClassInstanse, propInstanse, null);
-                        }
-                    }
-                }
-
-                return tClassInstanse;
+                return GetByImportConstructorAttributes(requestedType) ?? GetByProperyAttributes(requestedType);
             }
 
-            return Activator.CreateInstance(type);
+            return Activator.CreateInstance(requestedType);
         }
 
-        private Type GetInterface(Type type)
+        private object GetByProperyAttributes(Type requestedType)
         {
-            if (_types.Any(item => type.IsAssignableFrom(item)))
+            var resultType = GetTypeIfExist(item => item == requestedType);
+            var resultInstanse = Activator.CreateInstance(resultType);
+
+            var properties = resultType.GetProperties().Where(prop => prop.GetCustomAttributes<ImportAttribute>().Any());
+
+            foreach (var property in properties)
             {
-                return GetTypeIfExist(item => type.IsAssignableFrom(item) &&
-                                                   item.GetCustomAttribute<ExportAttribute>()?.Contract == type);
+                var propertyDependensy = GetTypeIfExist(type => type == property.PropertyType);
+                property.SetValue(resultInstanse, GetInstance(propertyDependensy), null);
             }
 
-            throw new IoCException($"You haven't assignable registered class for this interface: {type.Name}");
+            return resultInstanse;
+        }
+
+        private object GetByImportConstructorAttributes(Type requestedType)
+        {
+            if (requestedType.GetCustomAttribute<ImportConstructorAttribute>() is null)
+            {
+                return null;
+            }
+
+            var constructors = requestedType.GetConstructors().ToList();
+
+            if (!constructors.Any())
+            {
+                throw new IoCException($"You don't have public constructors in class {requestedType.Name}");
+            }
+
+            if (constructors.Count > 1)
+            {
+                throw new IoCException($"You have more than one public constructor in class {requestedType.Name}");
+            }
+
+            var constructor = constructors.First();
+            var parameters = constructor.GetParameters();
+
+            return constructor.Invoke(parameters.Select(parameter => GetInstance(GetTypeIfExist(type => type == parameter.ParameterType))).ToArray());
+        }
+
+        private Type GetImplementationInterfaceType(Type type)
+        {
+            if (!_types.Any(item => type.IsAssignableFrom(item)))
+            {
+                throw new IoCException($"You haven't assignable registered class for this interface: {type.Name}");
+            }
+
+            return GetTypeIfExist(item => type.IsAssignableFrom(item) &&
+                                                  item.GetCustomAttribute<ExportAttribute>()?.Contract == type);
         }
 
         private Type GetTypeIfExist(Func<Type, bool> predicate = null)
@@ -142,23 +120,25 @@ namespace Task1
                 throw new IoCException($"You can't get type from registered list of types.");
             }
 
-            if (elements.Count > 1)
-            {
-                throw new IoCException($"You have more that one registered dependensy");
-            }
-
             return elements.First();
-
         }
 
-        private void CheckNull<T>(params T[] t)
+        private static void CheckNull<T>(params T[] t)
         {
             foreach (var item in t)
             {
-                if (item is null)
+                if (EqualityComparer<T>.Default.Equals(item, default(T)))
                 {
                     throw new ArgumentNullException(nameof(item));
                 }
+            }
+        }
+
+        private void AddIfNotExist(Type type)
+        {
+            if (!_types.Add(type))
+            {
+                throw new IoCException($"You have more that one registered dependensy");
             }
         }
     }

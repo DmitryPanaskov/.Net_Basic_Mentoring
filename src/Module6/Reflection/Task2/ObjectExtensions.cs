@@ -22,16 +22,7 @@ namespace Task2
             }
 
             var resultFields = new List<FieldInfo>();
-            GetAllHiddenFieldsRecursive(type, resultFields);
-
-            // Find hidden field by type and special name pattern <PropertyName>k__BackingField
-            var hiddenField = resultFields.FirstOrDefault(f => f.FieldType == property.PropertyType &&
-                                                               f.Name.Contains($"<{property.Name}>"));
-
-            if (hiddenField != null)
-            {
-                obj.SetFieldValue(hiddenField.Name, newValue, Flags.AllMembers);
-            }
+            GetAllHiddenFieldsRecursive(type, resultFields, property, obj, newValue);
         }
 
         public static void SetReadOnlyField(this object obj, string filedName, object newValue)
@@ -42,7 +33,7 @@ namespace Task2
             obj.SetFieldValue(filedName, newValue, Flags.AllMembers);
         }
 
-        private static void GetAllHiddenFieldsRecursive(Type type, List<FieldInfo> fieldInfos)
+        private static void GetAllHiddenFieldsRecursive(Type type, List<FieldInfo> fieldInfos, PropertyInfo property, object obj, object newValue)
         {
             var fields = type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic);
 
@@ -51,9 +42,17 @@ namespace Task2
                 fieldInfos.AddRange(fields);
             }
 
+            var hiddenField = fields.FirstOrDefault(f => f.FieldType == property.PropertyType &&
+                                                              f.Name.Contains($"<{property.Name}>"));
+
+            if (hiddenField != null)
+            {
+                obj.SetFieldValue(hiddenField.Name, newValue, Flags.AllMembers);
+            }
+
             if (type.BaseType != null)
             {
-                GetAllHiddenFieldsRecursive(type.BaseType, fieldInfos);
+                GetAllHiddenFieldsRecursive(type.BaseType, fieldInfos, property, obj, newValue);
             }
         }
 
@@ -61,7 +60,7 @@ namespace Task2
         {
             foreach (var item in t)
             {
-                if (item is null)
+                if (EqualityComparer<T>.Default.Equals(item, default(T)))
                 {
                     throw new ArgumentNullException(nameof(item));
                 }
