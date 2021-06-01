@@ -9,7 +9,13 @@ namespace Katas
     {
         public bool IsLeapYear(int year)
         {
-            throw new NotImplementedException();
+            if (year > 3000 || year <= 0)
+            {
+                throw new ArgumentException("The value must be between 1 and 3000", nameof(year));
+            }
+
+            // return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
+            return DateTime.IsLeapYear(year);
         }
     }
 }
