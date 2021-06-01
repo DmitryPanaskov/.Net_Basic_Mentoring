@@ -87,7 +87,7 @@ namespace Katas.Tests
                     fourthBook,
                     fifthBook,
                 },
-                51.6M,
+                54M,
             };
 
             yield return new object[]
@@ -109,7 +109,7 @@ namespace Katas.Tests
                     sixthBook,
                     seventhBook,
                 },
-                84M,
+                98M,
             };
 
             yield return new object[]
@@ -137,7 +137,7 @@ namespace Katas.Tests
                     secondBook,
                     secondBook,
                 },
-                38.4M,
+                39.2M,
             };
         }
     }
