@@ -49,18 +49,18 @@ namespace Katas.Tests
         [TestCase(-99999)]
         [TestCase(999999999999)]
         [TestCase(long.MaxValue)]
-        public void Translate_InvalidNumber_ThrowArgumentOutOfRangeException(long value)
+        public void Translate_InvalidNumber_ThrowArgumentOutOfRangeException(long number)
         {
             // Arrange
             var errorMessage = $"The value must be between 0 and 9999999999";
             ILCDTranslator translator = new LCDTranslator();
 
             // Act
-            Action act = () => translator.Translate(value);
+            Action act = () => translator.Translate(number);
 
             // Assert
             act.Should().Throw<ArgumentOutOfRangeException>()
-                .WithMessage($"{errorMessage} (Parameter '{nameof(value)}')");
+                .WithMessage($"{errorMessage} (Parameter '{nameof(number)}')");
         }
 
 
