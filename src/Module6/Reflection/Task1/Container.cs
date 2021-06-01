@@ -48,7 +48,8 @@ namespace Task1
         {
             if (requestedType.IsInterface)
             {
-                requestedType = GetImplementationInterfaceType(requestedType);
+                requestedType = GetTypeIfExist(item => requestedType.IsAssignableFrom(item) &&
+                                                  item.GetCustomAttribute<ExportAttribute>()?.Contract == requestedType);
             }
 
             if (requestedType.IsClass)
@@ -98,17 +99,6 @@ namespace Task1
             var parameters = constructor.GetParameters();
 
             return constructor.Invoke(parameters.Select(parameter => GetInstance(GetTypeIfExist(type => type == parameter.ParameterType))).ToArray());
-        }
-
-        private Type GetImplementationInterfaceType(Type type)
-        {
-            if (!_types.Any(item => item.GetCustomAttribute<ExportAttribute>()?.Contract == type))
-            {
-                throw new IoCException($"You haven't assignable registered class for this interface: {type.Name}");
-            }
-
-            return GetTypeIfExist(item => type.IsAssignableFrom(item) &&
-                                                  item.GetCustomAttribute<ExportAttribute>()?.Contract == type);
         }
 
         private Type GetTypeIfExist(Func<Type, bool> predicate = null)

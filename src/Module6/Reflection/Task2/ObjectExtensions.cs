@@ -21,8 +21,7 @@ namespace Task2
                 throw new ArgumentException($"Property with name {propertyName} does not exist");
             }
 
-            var resultFields = new List<FieldInfo>();
-            GetAllHiddenFieldsRecursive(type, resultFields, property, obj, newValue);
+            obj.SetFieldValue($"<{propertyName}>k__BackingField", newValue, Flags.AllMembers);
         }
 
         public static void SetReadOnlyField(this object obj, string filedName, object newValue)
@@ -31,29 +30,6 @@ namespace Task2
             CheckStringToNullOrEmpty(filedName);
 
             obj.SetFieldValue(filedName, newValue, Flags.AllMembers);
-        }
-
-        private static void GetAllHiddenFieldsRecursive(Type type, List<FieldInfo> fieldInfos, PropertyInfo property, object obj, object newValue)
-        {
-            var fields = type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic);
-
-            if (fields.Any())
-            {
-                fieldInfos.AddRange(fields);
-            }
-
-            var hiddenField = fields.FirstOrDefault(f => f.FieldType == property.PropertyType &&
-                                                              f.Name.Contains($"<{property.Name}>"));
-
-            if (hiddenField != null)
-            {
-                obj.SetFieldValue(hiddenField.Name, newValue, Flags.AllMembers);
-            }
-
-            if (type.BaseType != null)
-            {
-                GetAllHiddenFieldsRecursive(type.BaseType, fieldInfos, property, obj, newValue);
-            }
         }
 
         private static void CheckNull<T>(params T[] t)
