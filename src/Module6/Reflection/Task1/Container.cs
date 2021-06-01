@@ -102,7 +102,7 @@ namespace Task1
 
         private Type GetImplementationInterfaceType(Type type)
         {
-            if (!_types.Any(item => type.IsAssignableFrom(item)))
+            if (!_types.Any(item => item.GetCustomAttribute<ExportAttribute>()?.Contract == type))
             {
                 throw new IoCException($"You haven't assignable registered class for this interface: {type.Name}");
             }
