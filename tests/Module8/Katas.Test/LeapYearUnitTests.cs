@@ -38,13 +38,14 @@ namespace Katas.Tests
 
         [TestCase(-1)]
         [TestCase(-8)]
+        [TestCase(0)]
         [TestCase(-99999)]
         [TestCase(int.MinValue)]
         [TestCase(int.MinValue)]
         public void IsLeap_WhenYearNegative_ShouldThrowException(int year)
         {
             // Arrange
-            var errorMessage = $"The value must be between 0 and 3000";
+            var errorMessage = $"The value must be between 1 and 3000";
             ILeapYear leapYear = new LeapYear();
 
             // Act
@@ -59,7 +60,7 @@ namespace Katas.Tests
         {
             yield return new object[]
             {
-                    0,
+                    8,
                     true,
             };
 
@@ -92,7 +93,7 @@ namespace Katas.Tests
 
             yield return new object[]
             {
-                    1992,
+                    1991,
                     false,
             };
 
