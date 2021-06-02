@@ -5,62 +5,136 @@ using Tasks.DoNotChange;
 
 namespace Tasks
 {
-    public class DoublyLinkedList<T> : ParentEnumerable<T>, IDoublyLinkedList<T>
+    public class DoublyLinkedList<T> : IDoublyLinkedList<T>
     {
-        public void Add(T item) => Push(item);
+        private int _length = 0;
+        private readonly Node<T> _node;
+
+        public DoublyLinkedList()
+        {
+            _node = new Node<T>(default(T));
+            _node.PreviousNode = _node;
+            _node.NextNode = _node;
+        }
+
+        public int Length => _length;
+
+        public void Add(T item)
+        {
+            var newNode = new Node<T>(item)
+            {
+                NextNode = _node,
+                PreviousNode = _node.PreviousNode
+            };
+
+            _node.PreviousNode.NextNode = newNode;
+            _node.PreviousNode = newNode;
+
+            _length++;
+        }
 
         public void AddAt(int index, T item)
         {
-            if (index == Length)
+            if (index > _length || index < 0)
             {
-                Push(item);
-                return;
+                throw new IndexOutOfRangeException();
             }
 
-            var currentNode = FindNodeByIndex(index);
-            var newNode = new Node<T>(item, currentNode.PreviousNode, currentNode);
+            var newNode = new Node<T>(item);
+            var node = GetNodeByIndex(index);
 
-            currentNode.PreviousNode = newNode;
-            Length++;
+            newNode.NextNode = node;
+            newNode.PreviousNode = node.PreviousNode;
+
+            node.PreviousNode.NextNode = newNode;
+            node.PreviousNode = newNode;
+
+            _length++;
         }
 
         public T ElementAt(int index)
         {
-            var needNode = FindNodeByIndex(index);
-            return needNode.Data;
+            if (index > _length - 1 || index < 0)
+            {
+                throw new IndexOutOfRangeException();
+            }
+
+            return GetNodeByIndex(index).Data;
         }
 
         public void Remove(T item)
         {
-            ValidateIfListEmpty();
+            var node = _node.NextNode;
+            var iteration = 0;
 
-            var currentItem = Root;
-            var counter = default(int);
-
-            while (!currentItem.Data.Equals(item))
+            while (!node.Data.Equals(item) && iteration != _length - 1)
             {
-                currentItem = currentItem.NextNode;
-                counter++;
-
-                if (counter == Length)
-                {
-                    return;
-                }
+                iteration++;
+                node = node.NextNode;
             }
 
-            if (currentItem.Data.Equals(item))
+            if (node.Data.Equals(item))
             {
-                RemoveNode(currentItem);
+                node.PreviousNode.NextNode = node.NextNode;
+                node.NextNode.PreviousNode = node.PreviousNode;
+
+                _length--;
             }
         }
 
         public T RemoveAt(int index)
         {
-            var needNode = FindNodeByIndex(index);
+            if (_length == 0 || index > _length - 1 || index < 0)
+            {
+                throw new IndexOutOfRangeException();
+            }
 
-            RemoveNode(needNode);
+            var node = GetNodeByIndex(index);
 
-            return needNode.Data;
+            node.PreviousNode.NextNode = node.NextNode;
+            node.NextNode.PreviousNode = node.PreviousNode;
+
+            _length--;
+
+            return node.Data;
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            return new CustomEnumerator<T>(_node, _length);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        private Node<T> GetNodeByIndex(int index)
+        {
+            int iteration = 0;
+            var currentNode = _node.NextNode;
+
+            if (_length / 2 >= index)
+            {
+                while (iteration != index)
+                {
+                    iteration++;
+                    currentNode = currentNode.NextNode;
+                }
+
+                return currentNode;
+            }
+            else
+            {
+                currentNode = _node;
+                while (iteration != _length - index)
+                {
+                    iteration++;
+                    currentNode = _node.PreviousNode;
+                }
+
+                return currentNode;
+            }
         }
     }
 }

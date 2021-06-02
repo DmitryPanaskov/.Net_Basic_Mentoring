@@ -1,68 +1,58 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Tasks
 {
     public class CustomEnumerator<T> : IEnumerator<T>
     {
-        private ParentEnumerable<T> _list;
+        private readonly Node<T> _node;
+        private readonly int _length;
         private Node<T> _currentNode;
-        private bool _disposedValue;
         private int _iterator = -1;
 
-        public CustomEnumerator(ParentEnumerable<T> list, Node<T> root)
+        public CustomEnumerator(Node<T> node, int length)
         {
-            _list = list;
-            _currentNode = root;
+            _node = node;
+            _currentNode = node;
+            _length = length;
         }
-
-        object IEnumerator.Current => Current;
 
         public T Current
         {
             get
             {
-                var returnNode = _currentNode;
-                _currentNode = _currentNode.NextNode;
+                if (_iterator == -1 || _iterator >= _length)
+                {
+                    throw new InvalidOperationException();
+                }
 
-                return returnNode.Data;
+                return _currentNode.Data;
             }
         }
 
+        object IEnumerator.Current => Current;
+
         public bool MoveNext()
         {
-            _iterator++;
-            return _iterator < _list.Length;
+            if (_iterator < _length - 1)
+            {
+                _iterator++;
+                _currentNode = _currentNode.NextNode;
+
+                return true;
+            }
+
+            return false;
         }
 
         public void Reset()
         {
-            throw new NotSupportedException();
+            _currentNode = _node;
         }
-
 
         public void Dispose()
         {
-            Dispose(disposing: true);
-            System.GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (_disposedValue)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-                _list = null;
-                _currentNode = null;
-            }
-
-            _disposedValue = true;
         }
     }
 }

@@ -3,28 +3,43 @@ using Tasks.DoNotChange;
 
 namespace Tasks
 {
-    public class HybridFlowProcessor<T> : ParentEnumerable<T>, IHybridFlowProcessor<T>
+    public class HybridFlowProcessor<T> : IHybridFlowProcessor<T>
     {
-        public T Dequeue()
+        private readonly DoublyLinkedList<T> _itemsList;
+
+        public HybridFlowProcessor()
         {
-            CheckNull(Length);
-
-            var needItem = Root;
-            RemoveNode(needItem);
-
-            return needItem.Data;
+            _itemsList = new DoublyLinkedList<T>();
         }
 
-        public void Enqueue(T item) => Push(item);
+        public T Dequeue()
+        {
+            if (_itemsList.Length == 0)
+            {
+                throw new InvalidOperationException();
+            }
+
+            return _itemsList.RemoveAt(0);
+        }
+
+        public void Enqueue(T item)
+        {
+            _itemsList.Add(item);
+        }
 
         public T Pop()
         {
-            CheckNull(Length);
+            if (_itemsList.Length == 0)
+            {
+                throw new InvalidOperationException();
+            }
 
-            var needItem = Head;
-            RemoveNode(needItem);
+            return _itemsList.RemoveAt(_itemsList.Length - 1);
+        }
 
-            return needItem.Data;
+        public void Push(T item)
+        {
+            _itemsList.Add(item);
         }
     }
 }
