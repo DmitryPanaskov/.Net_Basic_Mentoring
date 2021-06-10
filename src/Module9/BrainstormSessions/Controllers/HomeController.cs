@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BrainstormSessions.Controllers
 {
+    using BrainstormSessions.Logger;
+
     public class HomeController : Controller
     {
         private readonly IBrainstormSessionRepository _sessionRepository;
@@ -30,6 +32,8 @@ namespace BrainstormSessions.Controllers
                 IdeaCount = session.Ideas.Count
             });
 
+            Logger.Log.Info(model);
+
             return View(model);
         }
 
@@ -44,6 +48,7 @@ namespace BrainstormSessions.Controllers
         {
             if (!ModelState.IsValid)
             {
+                Logger.Log.Warn($"Modelstate in method {nameof(Index)} has {this.ModelState.ErrorCount} errors");
                 return BadRequest(ModelState);
             }
             else

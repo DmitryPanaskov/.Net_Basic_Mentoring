@@ -29,6 +29,8 @@ namespace BrainstormSessions
             IWebHostEnvironment env,
             IServiceProvider serviceProvider)
         {
+            Logger.Logger.InitLogger();
+
             if (env.IsDevelopment())
             {
                 var repository = serviceProvider.GetRequiredService<IBrainstormSessionRepository>();

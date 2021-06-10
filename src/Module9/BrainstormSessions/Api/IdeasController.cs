@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BrainstormSessions.Api
 {
+    using BrainstormSessions.Logger;
+
     public class IdeasController : ControllerBase
     {
         private readonly IBrainstormSessionRepository _sessionRepository;
@@ -101,6 +103,7 @@ namespace BrainstormSessions.Api
         {
             if (!ModelState.IsValid)
             {
+                Logger.Log.Error($"Modelstate in method {nameof(CreateActionResult)} has {ModelState.ErrorCount} errors");
                 return BadRequest(ModelState);
             }
 

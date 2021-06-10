@@ -1,0 +1,22 @@
+Level	CountMessages
+INFO	206
+Level	7
+
+Statistics:
+-----------
+Elements processed: 213
+Elements output:    2
+Execution time:     0.01 seconds
+
+Task completed with parse errors.
+Parse errors:
+7 parse errors occurred during processing (To see details about the parse
+  error(s), execute the command again with a non-zero value for the "-e"
+  argument)
+
+Statistics:
+-----------
+Elements processed: 206
+Elements output:    0
+Execution time:     0.00 seconds
+

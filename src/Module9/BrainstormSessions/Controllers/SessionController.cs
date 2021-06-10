@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BrainstormSessions.Controllers
 {
+    using BrainstormSessions.Logger;
+
     public class SessionController : Controller
     {
         private readonly IBrainstormSessionRepository _sessionRepository;
@@ -16,8 +18,11 @@ namespace BrainstormSessions.Controllers
 
         public async Task<IActionResult> Index(int? id)
         {
+            Logger.Log.Debug($"Method {nameof(Index)}, id for search {id}");
+
             if (!id.HasValue)
             {
+
                 return RedirectToAction(actionName: nameof(Index),
                     controllerName: "Home");
             }
@@ -34,6 +39,8 @@ namespace BrainstormSessions.Controllers
                 Name = session.Name,
                 Id = session.Id
             };
+
+            Logger.Log.Debug($"Method {nameof(Index)}, model: {viewModel}");
 
             return View(viewModel);
         }
