@@ -21,9 +21,17 @@ namespace Katas
                 throw new ArgumentOutOfRangeException(nameof(number), "The value must be between 0 and 9999999999");
             }
 
-            var arrayLong = number.ToString().Select(digit => long.Parse(digit.ToString()));
+            var listOfDigit = new List<long>();
 
-            foreach (var digit in arrayLong)
+            while (number > 0)
+            {
+                listOfDigit.Add(number % 10);
+                number = number / 10;
+            }
+
+            listOfDigit.Reverse();
+
+            foreach (var digit in listOfDigit)
             {
                 TranslateNumberToLcdString(digit);
             }
