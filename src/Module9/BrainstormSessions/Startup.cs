@@ -12,6 +12,8 @@ using Microsoft.Extensions.Hosting;
 
 namespace BrainstormSessions
 {
+    using SMTPService;
+
     public class Startup
     {
         public void ConfigureServices(IServiceCollection services)
@@ -20,6 +22,8 @@ namespace BrainstormSessions
                 optionsBuilder => optionsBuilder.UseInMemoryDatabase("InMemoryDb"));
 
             services.AddControllersWithViews();
+
+            services.AddSingleton<IMailService, MailService>();
 
             services.AddScoped<IBrainstormSessionRepository,
                 EFStormSessionRepository>();

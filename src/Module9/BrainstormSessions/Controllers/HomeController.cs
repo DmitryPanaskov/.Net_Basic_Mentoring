@@ -11,13 +11,17 @@ namespace BrainstormSessions.Controllers
 {
     using BrainstormSessions.Logger;
 
+    using SMTPService;
+
     public class HomeController : Controller
     {
         private readonly IBrainstormSessionRepository _sessionRepository;
+        private readonly IMailService _mailService;
 
         public HomeController(IBrainstormSessionRepository sessionRepository)
         {
             _sessionRepository = sessionRepository;
+            _mailService = new MailService();
         }
 
         public async Task<IActionResult> Index()
@@ -33,6 +37,9 @@ namespace BrainstormSessions.Controllers
             });
 
             Logger.Log.Info(model);
+
+            // _mailService.SentToMail("TEST EMAILS", "error");
+            // Logger.Log.Error("TEST EMAILS");
 
             return View(model);
         }

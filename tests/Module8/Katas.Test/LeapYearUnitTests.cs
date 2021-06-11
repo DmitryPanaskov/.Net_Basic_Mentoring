@@ -10,14 +10,19 @@ namespace Katas.Tests
 {
     public class LeapYearUnitTests
     {
+        private ILeapYear _leapYear;
+
+        [SetUp]
+        public void GlobalSetup()
+        {
+            _leapYear = new LeapYear();
+        }
+
         [TestCaseSource(nameof(GetPositiveTestCases))]
         public void IsLeapYear_ValidYear_ReturnsTrue(int year, bool isLeapYear)
         {
-            // Arrange
-            ILeapYear leapYear = new LeapYear();
-
             // Act
-            var act = leapYear.IsLeapYear(year);
+            var act = _leapYear.IsLeapYear(year);
 
             // Assert
             act.Should().BeTrue();
@@ -26,11 +31,8 @@ namespace Katas.Tests
         [TestCaseSource(nameof(GetNegativeTestCases))]
         public void IsLeapYear_ValidYear_ReturnsFasle(int year, bool isLeapYear)
         {
-            // Arrange
-            ILeapYear leapYear = new LeapYear();
-
             // Act
-            var act = leapYear.IsLeapYear(year);
+            var act = _leapYear.IsLeapYear(year);
 
             // Assert
             act.Should().BeFalse();
@@ -46,10 +48,9 @@ namespace Katas.Tests
         {
             // Arrange
             var errorMessage = $"The value must be between 1 and 3000";
-            ILeapYear leapYear = new LeapYear();
 
             // Act
-            Action act = () => leapYear.IsLeapYear(year);
+            Action act = () => _leapYear.IsLeapYear(year);
 
             // Assert
             act.Should().Throw<ArgumentException>()

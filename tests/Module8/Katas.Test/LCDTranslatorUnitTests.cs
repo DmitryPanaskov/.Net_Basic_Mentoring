@@ -32,14 +32,19 @@ namespace Katas.Tests
                                            "|_||_||_||_||_||_||_||_||_||_|\r\n" +
                                            "._|._|._|._|._|._|._|._|._|._|\r\n";
 
+        private ILCDTranslator _translator;
+
+        [SetUp]
+        public void GlobalSetup()
+        {
+            _translator = new LCDTranslator();
+        }
+
         [TestCaseSource(nameof(GetPositiveTestCases))]
         public void Translate_ValidNumber_ReturnsLcdStringValue(long value, string resultLCD)
         {
-            // Arrange
-            ILCDTranslator translator = new LCDTranslator();
-
             // Act
-            var act = translator.Translate(value);
+            var act = _translator.Translate(value);
 
             // Assert
             act.Equals(resultLCD);
@@ -53,10 +58,9 @@ namespace Katas.Tests
         {
             // Arrange
             var errorMessage = $"The value must be between 0 and 9999999999";
-            ILCDTranslator translator = new LCDTranslator();
 
             // Act
-            Action act = () => translator.Translate(number);
+            Action act = () => _translator.Translate(number);
 
             // Assert
             act.Should().Throw<ArgumentOutOfRangeException>()

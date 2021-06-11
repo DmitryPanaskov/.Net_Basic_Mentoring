@@ -98,6 +98,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BrainstormSessions", "src\M
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BrainstormSessions.Test", "tests\Module9\BrainstormSessions.Test\BrainstormSessions.Test.csproj", "{6D48E343-E70C-4A60-8459-1F26AA726384}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMTPService", "SMTPService\SMTPService.csproj", "{9B98BAFC-521F-4F04-BC58-A552BDA4B9A2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -204,6 +206,10 @@ Global
 		{6D48E343-E70C-4A60-8459-1F26AA726384}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D48E343-E70C-4A60-8459-1F26AA726384}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D48E343-E70C-4A60-8459-1F26AA726384}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B98BAFC-521F-4F04-BC58-A552BDA4B9A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B98BAFC-521F-4F04-BC58-A552BDA4B9A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B98BAFC-521F-4F04-BC58-A552BDA4B9A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B98BAFC-521F-4F04-BC58-A552BDA4B9A2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -251,6 +257,7 @@ Global
 		{DB10F5EC-197C-465E-A7F8-31110EEFA479} = {54764FBE-F99C-4BFF-8EA1-350F80BE8854}
 		{FDAB27FE-A9A3-4DF8-B7A4-C8A305850D7A} = {F71076B6-559F-4D83-9E9D-CC5608E01E5B}
 		{6D48E343-E70C-4A60-8459-1F26AA726384} = {DB10F5EC-197C-465E-A7F8-31110EEFA479}
+		{9B98BAFC-521F-4F04-BC58-A552BDA4B9A2} = {F71076B6-559F-4D83-9E9D-CC5608E01E5B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4FF7939D-29E6-4F9E-9159-72A94022FC53}

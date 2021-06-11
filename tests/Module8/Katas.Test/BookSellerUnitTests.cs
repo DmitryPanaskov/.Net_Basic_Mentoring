@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using FluentAssertions;
 using Katas;
+using Katas.BookSellerTask;
 using Katas.Interfaces;
 using Moq;
 using NUnit.Framework;
@@ -18,16 +19,19 @@ namespace Katas.Tests
         private const string sixthBook = "Half Blood Prince";
         private const string seventhBook = "DeathlyHallows";
 
+        private IBookSeller _seller;
 
+        [SetUp]
+        public void GlobalSetup()
+        {
+            _seller = new BookSeller();
+        }
 
         [TestCaseSource(nameof(GetPositiveTestCases))]
         public void TotalSumWithDiscount_ValidList_TotalSumShouldBeCorrect(List<string> books, decimal expectedSum)
         {
-            // Arrange
-            IBookSeller seller = new BookSeller();
-
             // Act
-            var totalSum = seller.TotalSumWithDiscount(books);
+            var totalSum = _seller.TotalSumWithDiscount(books);
 
             // Assert
             totalSum.Should().Be(expectedSum);
@@ -38,10 +42,9 @@ namespace Katas.Tests
         {
             // Arrange
             List<string> books = null;
-            IBookSeller seller = new BookSeller();
 
             // Act
-            Action act = () => seller.TotalSumWithDiscount(books);
+            Action act = () => _seller.TotalSumWithDiscount(books);
 
             // Assert
             act.Should().Throw<ArgumentNullException>().WithMessage($"Value cannot be null. (Parameter '{nameof(books)}')");
@@ -87,7 +90,7 @@ namespace Katas.Tests
                     fourthBook,
                     fifthBook,
                 },
-                54M,
+                51.6M,
             };
 
             yield return new object[]
@@ -109,7 +112,7 @@ namespace Katas.Tests
                     sixthBook,
                     seventhBook,
                 },
-                98M,
+                84M,
             };
 
             yield return new object[]
@@ -137,7 +140,7 @@ namespace Katas.Tests
                     secondBook,
                     secondBook,
                 },
-                39.2M,
+                38.40M,
             };
         }
     }
