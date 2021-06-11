@@ -1,10 +1,10 @@
-﻿namespace SMTPService
-{
-    using System;
-    using System.Net;
-    using System.Net.Mail;
-    using System.Threading.Tasks;
+﻿using System;
+using System.Net;
+using System.Net.Mail;
+using System.Threading.Tasks;
 
+namespace SMTPService
+{
     public class MailService : IMailService
     {
         public void SentToMail(string message, string subject = null)
@@ -32,7 +32,6 @@
                 Console.WriteLine(ex.Message.ToString());
             }
         }
-
 
         public void SentToGmail(string message, string subject = null)
         {
